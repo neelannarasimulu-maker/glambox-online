@@ -1,0 +1,544 @@
+﻿{
+    "popupKey":  "nails",
+    "name":  "Nail Studio",
+    "tagline":  "Polished sets, modern nail art, and luxe care",
+    "theme":  {
+                  "primary":  "#db2777",
+                  "secondary":  "#f472b6",
+                  "accent":  "#facc15",
+                  "bg":  "#fff1f2",
+                  "fg":  "#111827",
+                  "muted":  "#ffe4e6",
+                  "card":  "#ffffff",
+                  "border":  "#fecdd3"
+              },
+    "images":  {
+                   "hero":  {
+                                "src":  "/nails/nails-hero.jpg",
+                                "alt":  "Nail Studio hero"
+                            },
+                   "defaultCard":  {
+                                       "src":  "/nails/nails-card.jpg",
+                                       "alt":  "Nail art"
+                                   }
+               },
+    "nav":  {
+                "items":  [
+                              {
+                                  "id":  "info",
+                                  "label":  "Studio",
+                                  "href":  "/explore/nails"
+                              },
+                              {
+                                  "id":  "services",
+                                  "label":  "Nail Services",
+                                  "href":  "/explore/nails/services"
+                              },
+                              {
+                                  "id":  "consultants",
+                                  "label":  "Nail Artists",
+                                  "href":  "/explore/nails/consultants"
+                              },
+                              {
+                                  "id":  "gallery",
+                                  "label":  "Nail Lookbook",
+                                  "href":  "/explore/nails/gallery"
+                              },
+                              {
+                                  "id":  "products",
+                                  "label":  "Nail Care",
+                                  "href":  "/explore/nails/products"
+                              },
+                              {
+                                  "id":  "booking",
+                                  "label":  "Book Nails",
+                                  "href":  "/explore/nails/booking"
+                              }
+                          ]
+            },
+    "pages":  {
+                  "info":  {
+                               "hero":  {
+                                            "badge":  "Luxury nail artistry",
+                                            "headline":  "Modern nail design",
+                                            "subheadline":  "Sculpted shapes, rich colours, and wellness-first care.",
+                                            "primaryCta":  {
+                                                               "label":  "Book nail services",
+                                                               "href":  "/explore/nails/booking"
+                                                           },
+                                            "secondaryCta":  {
+                                                                 "label":  "See more",
+                                                                 "href":  "/explore/nails/services"
+                                                             },
+                                            "image":  {
+                                                          "src":  "/nails/nails-hero.jpg",
+                                                          "alt":  "Nail Studio interior"
+                                                      },
+                                            "trustCues":  [
+                                                              "Clean beauty",
+                                                              "Gel artistry",
+                                                              "Express sets"
+                                                          ]
+                                        },
+                               "about":  {
+                                             "headline":  "About Nail Studio",
+                                             "body":  "Nail Studio is a soft-glow space for hands that carry your story. We shape, strengthen, and elevate your nails with care that fits your pace and your style — whether you want a quiet classic or a pop of art. Every appointment is designed to feel unhurried, thoughtful, and uniquely yours."
+                                         },
+                               "highlights":  [
+                                                  {
+                                                      "title":  "Art direction",
+                                                      "body":  "Trend-led designs with bespoke colour palettes, tailored to your style and the shape that flatters your hands.",
+                                                      "icon":  "Brush"
+                                                  },
+                                                  {
+                                                      "title":  "Nail health",
+                                                      "body":  "Strengthening rituals and cuticle care that protect, nourish, and keep your nails resilient between visits.",
+                                                      "icon":  "Heart"
+                                                  },
+                                                  {
+                                                      "title":  "Express glow",
+                                                      "body":  "Efficient services for busy schedules, delivering a polished finish without sacrificing detail or care.",
+                                                      "icon":  "Zap"
+                                                  }
+                                              ]
+                           },
+                  "services":  {
+                                   "headline":  "Nail services",
+                                   "body":  "Choose your finish, shape, and signature art.",
+                                   "relatedConsultants":  {
+                                                             "headline":  "Available nail artists",
+                                                             "body":  "Book a nail artist who performs this service.",
+                                                             "emptyMessage":  "Artist availability varies by date. Check back soon."
+                                                         },
+                                   "services":  [
+                                                    {
+                                                        "id":  "signature-mani",
+                                                        "title":  "Signature Manicure",
+                                                        "description":  "Cuticle care, shaping, and glossy polish. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R60.",
+                                                        "duration":  "50 min",
+                                                        "priceFrom":  "R60",
+                                                        "image":  {
+                                                                      "src":  "/nails/nails-service-1.jpg",
+                                                                      "alt":  "Signature manicure"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Gloss",
+                                                                     "Care"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A signature manicure with detailed cuticle care, shaping, buffing, and high-gloss polish. Perfect for a clean, classic finish.",
+                                                                        "prepSteps":  [
+                                                                                          "Remove gel or acrylic 24 hours before if possible.",
+                                                                                          "Bring inspiration photos if you want a specific finish.",
+                                                                                          "Avoid hand oils right before the appointment."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Mira Lopez",
+                                                                                                       "Rhea Singh"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Apply cuticle oil nightly for 5 days.",
+                                                                                               "Wear gloves for cleaning and hot water tasks.",
+                                                                                               "Book a refresh every 2 to 3 weeks."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "mira",
+                                                                              "rhea"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "gel-artist",
+                                                        "title":  "Gel Artist Set",
+                                                        "description":  "Gel extensions with custom art detailing. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R110.",
+                                                        "duration":  "90 min",
+                                                        "priceFrom":  "R110",
+                                                        "image":  {
+                                                                      "src":  "/nails/nails-service-2.jpg",
+                                                                      "alt":  "Gel artist set"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Gel",
+                                                                     "Design"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A gel extension set with custom art detailing and durable shine. Includes shaping, layering, and a protective top coat.",
+                                                                        "prepSteps":  [
+                                                                                          "Arrive with clean nails and no polish.",
+                                                                                          "Share your preferred length and shape.",
+                                                                                          "Bring reference art if you want a specific look."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Mira Lopez",
+                                                                                                       "Jules Martin"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Avoid hot water for 4 hours after service.",
+                                                                                               "Use cuticle oil to keep the set flexible.",
+                                                                                               "Schedule a fill every 2 to 3 weeks."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "mira",
+                                                                              "jules"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "spa-pedi",
+                                                        "title":  "Spa Pedicure",
+                                                        "description":  "Exfoliation, massage, and polish finish. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R75.",
+                                                        "duration":  "60 min",
+                                                        "priceFrom":  "R75",
+                                                        "image":  {
+                                                                      "src":  "/nails/nails-service-3.jpg",
+                                                                      "alt":  "Spa pedicure"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Relax",
+                                                                     "Hydrate"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A restorative pedicure with exfoliation, massage, and polish. Designed for softness, circulation, and a polished finish.",
+                                                                        "prepSteps":  [
+                                                                                          "Wear open-toe shoes after the appointment.",
+                                                                                          "Avoid shaving 24 hours before service.",
+                                                                                          "Share any sensitivity or concerns with your consultant."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Hana Okafor",
+                                                                                                       "Rhea Singh"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Moisturize feet daily for 7 days.",
+                                                                                               "Avoid tight shoes for 24 hours.",
+                                                                                               "Reapply top coat midweek for added shine."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "hana",
+                                                                              "rhea"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "builder-gel",
+                                                        "title":  "Builder Gel Sculpt",
+                                                        "description":  "Structured gel overlay with custom shape and strength. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R95.",
+                                                        "duration":  "80 min",
+                                                        "priceFrom":  "R95",
+                                                        "image":  {
+                                                                      "src":  "/nails/nails-service-4.jpg",
+                                                                      "alt":  "Builder gel sculpt"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Structure",
+                                                                     "Strength"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A structured builder gel overlay that adds strength and clean architecture. Ideal for durability with a natural look.",
+                                                                        "prepSteps":  [
+                                                                                          "Arrive with natural nails free of polish.",
+                                                                                          "Share your desired length and shape goals.",
+                                                                                          "Avoid lotions right before service."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Rhea Singh",
+                                                                                                       "Mira Lopez"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Avoid hard impact for 24 hours.",
+                                                                                               "Use cuticle oil to prevent lifting.",
+                                                                                               "Book a fill every 3 weeks."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "rhea",
+                                                                              "mira"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "express-refresh",
+                                                        "title":  "Express Refresh",
+                                                        "description":  "Quick clean-up, reshape, and polish change. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R45.",
+                                                        "duration":  "35 min",
+                                                        "priceFrom":  "R45",
+                                                        "image":  {
+                                                                      "src":  "/nails/nails-service-5.jpg",
+                                                                      "alt":  "Express refresh"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Express",
+                                                                     "Polish"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A quick polish refresh with light prep and shaping. Perfect between full services.",
+                                                                        "prepSteps":  [
+                                                                                          "Arrive with clean nails, no polish if possible.",
+                                                                                        "Bring your preferred colour or finish reference.",
+                                                                                          "Let us know if you need additional repair."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Hana Okafor",
+                                                                                                       "Jules Martin"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Avoid heat and water for 2 hours.",
+                                                                                               "Apply cuticle oil every other day.",
+                                                                                               "Refresh in 1 to 2 weeks for best results."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "hana",
+                                                                              "jules"
+                                                                          ]
+                                                    }
+                                                ]
+                               },
+                  "consultants":  {
+                                      "headline":  "Nail artists",
+                                      "body":  "Artists with a passion for detail and craft.",
+                                      "relatedServices":  {
+                                                             "headline":  "Services by this artist",
+                                                             "body":  "Choose a service this artist performs.",
+                                                             "emptyMessage":  "Services are tailored during consultation."
+                                                         },
+                                      "consultants":  [
+                                                          {
+                                                              "id":  "mira",
+                                                              "name":  "Mira Lopez",
+                                                              "role":  "Lead Nail Artist",
+                                                              "bio":  "Creates trend-forward art with precision detailing. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/nails/nails-consultant-1.jpg",
+                                                                            "alt":  "Mira Lopez"
+                                                                        },
+                                                              "specialties":  [
+                                                                                  "Chrome",
+                                                                                  "Micro art",
+                                                                                  "Extensions"
+                                                                              ],
+                                                              "extendedBio":  "Mira leads the art direction for Nail Studio with a focus on precision detail, chrome finishes, and custom sets. She is known for balancing bold creativity with clean structure.",
+                                                              "credentials":  [
+                                                                                  "Gel extensions",
+                                                                                  "Chrome art",
+                                                                                  "Advanced detailing"
+                                                                              ]
+                                                          },
+                                                          {
+                                                              "id":  "hana",
+                                                              "name":  "Hana Okafor",
+                                                              "role":  "Nail Care Specialist",
+                                                              "bio":  "Focuses on nail health and strengthening routines. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/nails/nails-consultant-2.jpg",
+                                                                            "alt":  "Hana Okafor"
+                                                                        },
+                                                              "specialties":  [
+                                                                                  "Cuticle care",
+                                                                                  "Recovery",
+                                                                                  "Spa rituals"
+                                                                              ],
+                                                              "extendedBio":  "Hana is a nail care specialist who prioritizes nail health, strength, and recovery. She designs rituals that keep nails resilient between services.",
+                                                              "credentials":  [
+                                                                                  "Cuticle care",
+                                                                                  "Recovery rituals",
+                                                                                  "Spa pedicures"
+                                                                              ]
+                                                          },
+                                                          {
+                                                              "id":  "jules",
+                                                              "name":  "Jules Martin",
+                                                              "role":  "Design Consultant",
+                                                              "bio":  "Collaborates on colour palettes and seasonal trends. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/nails/nails-consultant-3.jpg",
+                                                                            "alt":  "Jules Martin"
+                                                                        },
+                                                              "specialties":  [
+"Colour theory",
+                                                                                  "Seasonal drops",
+                                                                                  "Art direction"
+                                                                              ],
+                                                              "extendedBio":  "Jules collaborates on seasonal colour stories and art direction. Their work blends trend forecasting with clean, modern design.",
+                                                              "credentials":  [
+"Colour theory",
+                                                                                  "Trend forecasting",
+                                                                                  "Graphic art"
+                                                                              ]
+                                                          },
+                                                          {
+                                                              "id":  "rhea",
+                                                              "name":  "Rhea Singh",
+                                                              "role":  "Studio Artist",
+                                                              "bio":  "Known for sculpted shapes and clean minimal finishes. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/nails/nails-consultant-4.jpg",
+                                                                            "alt":  "Rhea Singh"
+                                                                        },
+                                                              "specialties":  [
+                                                                                  "Sculpted gel",
+                                                                                  "Minimal art",
+                                                                                  "Neutral palettes"
+                                                                              ],
+                                                              "extendedBio":  "Rhea is known for sculpted shapes and minimal finishes. She specialises in durability-focused sets with refined structure.",
+                                                              "credentials":  [
+                                                                                  "Builder gel",
+                                                                                  "Sculpted shapes",
+                                                                                  "Minimal art"
+                                                                              ]
+                                                          }
+                                                      ]
+                                  },
+                  "gallery":  {
+                                  "headline":  "Nail lookbook",
+                                  "body":  "Signature sets curated by the Nail Studio team.",
+                                  "items":  [
+                                                {
+                                                    "id":  "gallery-1",
+                                                    "title":  "Rose Chrome",
+                                                    "caption":  "Soft chrome finish with pastel gradients.",
+                                                    "image":  {
+                                                                  "src":  "/nails/nails-gallery-1.jpg",
+                                                                  "alt":  "Rose chrome"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-2",
+                                                    "title":  "Graphic Tips",
+                                                    "caption":  "Modern French tips with graphic accents.",
+                                                    "image":  {
+                                                                  "src":  "/nails/nails-gallery-2.jpg",
+                                                                  "alt":  "Graphic tips"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-3",
+                                                    "title":  "Gold Dust",
+                                                    "caption":  "Gilded foil textures for a luminous finish.",
+                                                    "image":  {
+                                                                  "src":  "/nails/nails-gallery-3.jpg",
+                                                                  "alt":  "Gold dust"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-4",
+                                                    "title":  "Berry Glaze",
+                                                    "caption":  "Deep berry tones with high-shine topcoat.",
+                                                    "image":  {
+                                                                  "src":  "/nails/nails-gallery-1.jpg",
+                                                                  "alt":  "Berry glaze"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-5",
+                                                    "title":  "Opal Swirl",
+                                                    "caption":  "Soft swirl art with opalescent finish.",
+                                                    "image":  {
+                                                                  "src":  "/nails/nails-gallery-2.jpg",
+                                                                  "alt":  "Opal swirl"
+                                                              }
+                                                }
+                                            ]
+                              },
+                  "products":  {
+                                   "headline":  "Nail care",
+                                   "body":  "Salon-grade essentials for at-home care.",
+                                   "products":  [
+                                                    {
+                                                        "id":  "cuticle-serum",
+                                                        "name":  "Cuticle Serum",
+                                                        "description":  "Botanical serum for hydration and glow.",
+                                                        "price":  "R28",
+                                                        "image":  {
+                                                                      "src":  "/nails/nails-product-1.jpg",
+                                                                      "alt":  "Cuticle Serum"
+                                                                  },
+                                                        "badge":  "Staff pick"
+                                                    },
+                                                    {
+                                                        "id":  "gel-top",
+                                                        "name":  "Gel Top Coat",
+                                                        "description":  "High-gloss top coat with long wear.",
+                                                        "price":  "R32",
+                                                        "image":  {
+                                                                      "src":  "/nails/nails-product-2.jpg",
+                                                                      "alt":  "Gel Top Coat"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "id":  "recovery-mask",
+                                                        "name":  "Nail Recovery Mask",
+                                                        "description":  "Strengthening masque for nails and cuticles.",
+                                                        "price":  "R36",
+                                                        "image":  {
+                                                                      "src":  "/nails/nails-product-3.jpg",
+                                                                      "alt":  "Nail Recovery Mask"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "id":  "file-set",
+                                                        "name":  "Glass File Set",
+                                                        "description":  "Precision shaping with gentle grit.",
+                                                        "price":  "R22",
+                                                        "image":  {
+                                                                      "src":  "/nails/nails-product-1.jpg",
+                                                                      "alt":  "Glass File Set"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "id":  "base-boost",
+                                                        "name":  "Base Boost Primer",
+                                                        "description":  "Smooths ridges and boosts polish wear.",
+                                                        "price":  "R24",
+                                                        "image":  {
+                                                                      "src":  "/nails/nails-product-2.jpg",
+                                                                      "alt":  "Base Boost Primer"
+                                                                  }
+                                                    }
+                                                ]
+                               },
+                  "booking":  {
+                                  "headline":  "Book Nail Studio",
+                                  "body":  "Find your perfect set and reserve a time.",
+                                  "steps":  [
+                                                {
+                                                    "title":  "Choose your service",
+                                                    "body":  "Select manicure, pedicure, or art packages."
+                                                },
+                                                {
+                                                    "title":  "Select your artist",
+                                                    "body":  "Meet Nail Studio artists who match your style."
+                                                },
+                                                {
+                                                    "title":  "Confirm details",
+                                  "body":  "Receive care tips and a personalised lookbook."
+                                                }
+                                            ],
+                                  "cta":  {
+                                              "label":  "Book nail services",
+                                              "href":  "/book"
+                                          },
+                                  "widget":  {
+                                                 "headline":  "Finalize your booking",
+                                                 "body":  "Select your consultant, date, and time. You'll see a confirmation instantly.",
+                                                 "serviceLabel":  "Service",
+                                                 "consultantLabel":  "Consultant",
+                                                 "dateLabel":  "Date",
+                                                 "timeLabel":  "Time",
+                                                 "confirmLabel":  "Confirm booking",
+                                                 "confirmationTitle":  "Booking confirmed",
+                                                 "confirmationBody":  "We will send a reminder with prep details.",
+                                                 "missingSelection":  "Select a date and time to confirm.",
+                                                 "emptyService":  "No services available right now.",
+                                                 "emptyConsultant":  "No consultants available for this service.",
+                                                 "timeOptions":  [
+                                                                     "09:00",
+                                                                     "10:30",
+                                                                     "12:00",
+                                                                     "14:00",
+                                                                     "15:30",
+                                                                     "17:00"
+                                                                 ]
+                                             }
+                              }
+              }
+}

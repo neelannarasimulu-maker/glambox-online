@@ -1,0 +1,262 @@
+{
+    "popupKey": "food",
+    "name": "Glambox Kitchen",
+    "tagline": "Custom light meals, crafted with care and flavour",
+    "theme": {
+        "primary": "#c46a3c",
+        "secondary": "#7f9b7f",
+        "accent": "#f1b080",
+        "bg": "#fbf2e8",
+        "fg": "#2b1d16",
+        "muted": "#f1e2d2",
+        "card": "#fff7ef",
+        "border": "#c46a3c"
+    },
+    "images": {
+        "hero": { "src": "/food/food-hero.jpg", "alt": "Glambox Kitchen interior" },
+        "defaultCard": { "src": "/food/food-card.jpg", "alt": "Fresh light meal" }
+    },
+    "nav": {
+        "items": [
+            { "id": "info", "label": "Kitchen", "href": "/explore/food" },
+            { "id": "services", "label": "Meals", "href": "/explore/food/services" },
+            { "id": "consultants", "label": "Chefs", "href": "/explore/food/consultants" },
+            { "id": "gallery", "label": "Menu Gallery", "href": "/explore/food/gallery" },
+            { "id": "products", "label": "Pantry", "href": "/explore/food/products" },
+            { "id": "booking", "label": "Order", "href": "/explore/food/booking" }
+        ]
+    },
+    "pages": {
+        "info": {
+            "hero": {
+                "badge": "Fresh, light, made for you",
+                "headline": "Meals that feel good and taste beautiful",
+                "subheadline": "Build a light meal your way — from bread to topping — or choose a preset crafted by our kitchen team.",
+                "primaryCta": { "label": "Build a meal", "href": "/explore/food/booking" },
+                "secondaryCta": { "label": "See more", "href": "/explore/food/services" },
+                "image": { "src": "/food/food-hero.jpg", "alt": "Glambox Kitchen counter" },
+                "trustCues": ["Fresh daily prep", "Light & balanced", "Customisable options"]
+            },
+            "about": {
+                "headline": "About Glambox Kitchen",
+                "body": "Glambox Kitchen is a calm, bright space for light meals that energise without weighing you down. Choose from curated presets or customise every element to suit your taste, dietary needs, and rhythm of the day."
+            },
+            "highlights": [
+                { "title": "Light sandwiches", "body": "Build on your choice of bread with balanced fillings and crisp toppings.", "icon": "Leaf" },
+                { "title": "Bagels & croissants", "body": "Soft, warm bakes paired with savoury or sweet combinations.", "icon": "Sun" },
+                { "title": "Preset meals", "body": "Chef-crafted options when you want an easy, beautiful choice.", "icon": "Sparkles" }
+            ]
+        },
+        "services": {
+            "headline": "Light meal menu",
+            "body": "Fresh sandwiches, bagels, and croissants you can personalise.",
+            "relatedConsultants": {
+                "headline": "Available chefs",
+                "body": "Choose a chef to prepare your meal.",
+                "emptyMessage": "Chef availability changes through the day."
+            },
+            "services": [
+                {
+                    "id": "garden-chicken",
+                    "title": "Garden Chicken Sandwich",
+                    "description": "Light chicken, citrus dressing, mixed greens, and herbs.",
+                    "duration": "15 min",
+                    "priceFrom": "R85",
+                    "image": { "src": "/food/food-meal-1.jpg", "alt": "Garden chicken sandwich" },
+                    "tags": ["Light", "Protein"],
+                    "details": {
+                        "longDescription": "A fresh, balanced sandwich with herb chicken, crunchy greens, and a citrus finish.",
+                        "prepSteps": ["Choose your bread and toppings.", "Confirm any allergies or preferences."],
+                        "aftercareSteps": ["Enjoy fresh within 30 minutes.", "Ask for a takeaway box if needed."],
+                        "recommendedConsultants": ["Harper Moyo", "Theo Bennett"]
+                    },
+                    "consultantIds": ["harper", "theo"]
+                },
+                {
+                    "id": "smoked-salmon-bagel",
+                    "title": "Smoked Salmon Bagel",
+                    "description": "Creamy spread, cucumber, capers, and lemon zest.",
+                    "duration": "12 min",
+                    "priceFrom": "R95",
+                    "image": { "src": "/food/food-meal-2.jpg", "alt": "Smoked salmon bagel" },
+                    "tags": ["Seafood", "Fresh"],
+                    "details": {
+                        "longDescription": "A light, silky bagel with smoked salmon and bright citrus notes.",
+                        "prepSteps": ["Select your spread and topping blend.", "Tell us if you prefer extra crunch."],
+                        "aftercareSteps": ["Enjoy immediately for best texture."],
+                        "recommendedConsultants": ["Amelia Brooks", "Harper Moyo"]
+                    },
+                    "consultantIds": ["amelia", "harper"]
+                },
+                {
+                    "id": "avocado-croissant",
+                    "title": "Avocado Croissant",
+                    "description": "Buttery croissant, smashed avocado, and chilli flakes.",
+                    "duration": "10 min",
+                    "priceFrom": "R70",
+                    "image": { "src": "/food/food-meal-3.jpg", "alt": "Avocado croissant" },
+                    "tags": ["Vegetarian", "Warm"],
+                    "details": {
+                        "longDescription": "A warm croissant with creamy avocado and a gentle kick of spice.",
+                        "prepSteps": ["Choose your toppings and spice level."],
+                        "aftercareSteps": ["Best enjoyed warm and fresh."],
+                        "recommendedConsultants": ["Theo Bennett", "Amelia Brooks"]
+                    },
+                    "consultantIds": ["theo", "amelia"]
+                }
+            ]
+        },
+        "consultants": {
+            "headline": "Kitchen chefs",
+            "body": "Meet the chefs crafting your light meals.",
+            "relatedServices": {
+                "headline": "Meals by this chef",
+                "body": "Choose a meal this chef prepares.",
+                "emptyMessage": "Menus rotate daily."
+            },
+            "consultants": [
+                {
+                    "id": "harper",
+                    "name": "Harper Moyo",
+                    "role": "Kitchen Lead",
+                    "bio": "Balances flavour with light, nourishing ingredients.",
+                    "image": { "src": "/food/food-chef-1.jpg", "alt": "Harper Moyo" },
+                    "specialties": ["Sandwiches", "Herb dressings", "Fresh greens"],
+                    "extendedBio": "Harper designs balanced sandwiches with bright, clean flavours and thoughtful textures.",
+                    "credentials": ["Culinary arts", "Nutrition-forward cooking", "Light meal prep"]
+                },
+                {
+                    "id": "amelia",
+                    "name": "Amelia Brooks",
+                    "role": "Bagel Specialist",
+                    "bio": "Known for fresh bagel builds with crisp toppings.",
+                    "image": { "src": "/food/food-chef-2.jpg", "alt": "Amelia Brooks" },
+                    "specialties": ["Bagels", "Seafood", "Citrus notes"],
+                    "extendedBio": "Amelia crafts bagels with clean lines, bright flavours, and a refined finish.",
+                    "credentials": ["Artisan baking", "Seafood handling", "Presentation"]
+                },
+                {
+                    "id": "theo",
+                    "name": "Theo Bennett",
+                    "role": "Croissant Artist",
+                    "bio": "Specialises in warm, flaky bakes with light fillings.",
+                    "image": { "src": "/food/food-chef-3.jpg", "alt": "Theo Bennett" },
+                    "specialties": ["Croissants", "Warm bakes", "Vegetarian builds"],
+                    "extendedBio": "Theo creates croissant builds that feel indulgent yet light.",
+                    "credentials": ["Pastry craft", "Light meal design", "Vegetarian options"]
+                }
+            ]
+        },
+        "gallery": {
+            "headline": "Menu gallery",
+            "body": "A look at our light, customisable meals.",
+            "items": [
+                { "id": "food-gallery-1", "title": "Citrus Chicken", "caption": "Fresh and bright with herbal notes.", "image": { "src": "/food/food-gallery-1.jpg", "alt": "Citrus chicken sandwich" } },
+                { "id": "food-gallery-2", "title": "Salmon Stack", "caption": "Clean, crisp, and elegant.", "image": { "src": "/food/food-gallery-2.jpg", "alt": "Salmon bagel" } },
+                { "id": "food-gallery-3", "title": "Avocado Warmth", "caption": "Comforting and light.", "image": { "src": "/food/food-gallery-3.jpg", "alt": "Avocado croissant" } }
+            ]
+        },
+        "products": {
+            "headline": "Pantry essentials",
+            "body": "Light extras and add-ons to take with you.",
+            "products": [
+                { "id": "citrus-dressing", "name": "Citrus Dressing", "description": "Bright, light dressing for salads.", "price": "R28", "image": { "src": "/food/food-product-1.jpg", "alt": "Citrus dressing" }, "badge": "New" },
+                { "id": "herb-crunch", "name": "Herb Crunch", "description": "A crisp topping mix with herbs and seeds.", "price": "R32", "image": { "src": "/food/food-product-2.jpg", "alt": "Herb crunch topping" } },
+                { "id": "citrus-tea", "name": "Citrus Tea", "description": "Light, calming tea blend.", "price": "R24", "image": { "src": "/food/food-product-3.jpg", "alt": "Citrus tea" } }
+            ]
+        },
+        "booking": {
+            "headline": "Build your meal",
+            "body": "Customise your light meal and let our kitchen prepare it fresh.",
+            "steps": [
+                { "title": "Choose your base", "body": "Select bread, bagel, or croissant." },
+                { "title": "Add your fillings", "body": "Pick proteins, greens, and toppings." },
+                { "title": "Confirm your order", "body": "We prep and plate it for you." }
+            ],
+            "cta": { "label": "Start a custom order", "href": "/explore/food/booking" },
+            "widget": {
+                "headline": "Finalise your order",
+                "body": "Choose your chef, time, and confirm your order.",
+                "serviceLabel": "Meal",
+                "consultantLabel": "Chef",
+                "dateLabel": "Date",
+                "timeLabel": "Time",
+                "confirmLabel": "Confirm order",
+                "confirmationTitle": "Order confirmed",
+                "confirmationBody": "Your meal will be prepared fresh.",
+                "missingSelection": "Select a date and time to confirm.",
+                "emptyService": "No meals available right now.",
+                "emptyConsultant": "No chefs available right now.",
+                "timeOptions": ["09:00", "10:30", "12:00", "14:00", "15:30", "17:00"]
+            },
+            "builder": {
+                "headline": "Custom meal builder",
+                "body": "Choose your bread, proteins, herbs, vegetables, and dressings to build a light meal.",
+                "notesLabel": "Allergies or notes",
+                "submitLabel": "Send to kitchen",
+                "confirmationTitle": "Your meal is in preparation",
+                "confirmationBody": "We are preparing your custom order now.",
+                "currencySymbol": "R",
+                "categories": [
+                    {
+                        "id": "bread",
+                        "label": "Bread",
+                        "items": [
+                            { "name": "Sourdough", "price": 14, "image": "/food/ingredient-sourdough.jpg" },
+                            { "name": "Wholegrain", "price": 12, "image": "/food/ingredient-wholegrain.jpg" },
+                            { "name": "Ciabatta", "price": 14, "image": "/food/ingredient-ciabatta.jpg" },
+                            { "name": "Bagel", "price": 13, "image": "/food/ingredient-bagel.jpg" },
+                            { "name": "Croissant", "price": 16, "image": "/food/ingredient-croissant.jpg" }
+                        ]
+                    },
+                    {
+                        "id": "meat",
+                        "label": "Meat",
+                        "items": [
+                            { "name": "Herb roast chicken", "price": 32, "image": "/food/ingredient-chicken.jpg" },
+                            { "name": "Smoked salmon", "price": 38, "image": "/food/ingredient-salmon.jpg" },
+                            { "name": "Turkey breast", "price": 30, "image": "/food/ingredient-turkey.jpg" },
+                            { "name": "Egg & chive", "price": 24, "image": "/food/ingredient-egg.jpg" }
+                        ]
+                    },
+                    {
+                        "id": "herbs",
+                        "label": "Herbs",
+                        "items": [
+                            { "name": "Micro herbs", "price": 8, "image": "/food/ingredient-microherbs.jpg" },
+                            { "name": "Dill", "price": 6, "image": "/food/ingredient-dill.jpg" },
+                            { "name": "Basil", "price": 7, "image": "/food/ingredient-basil.jpg" },
+                            { "name": "Parsley", "price": 5, "image": "/food/ingredient-parsley.jpg" }
+                        ]
+                    },
+                    {
+                        "id": "vegetables",
+                        "label": "Vegetables",
+                        "items": [
+                            { "name": "Cucumber ribbons", "price": 7, "image": "/food/ingredient-cucumber.jpg" },
+                            { "name": "Rocket", "price": 8, "image": "/food/ingredient-rocket.jpg" },
+                            { "name": "Tomato", "price": 6, "image": "/food/ingredient-tomato.jpg" },
+                            { "name": "Pickled onion", "price": 7, "image": "/food/ingredient-onion.jpg" },
+                            { "name": "Avocado", "price": 15, "image": "/food/ingredient-avocado.jpg" }
+                        ]
+                    },
+                    {
+                        "id": "dressings",
+                        "label": "Dressings",
+                        "items": [
+                            { "name": "Citrus cream cheese", "price": 9, "image": "/food/ingredient-creamcheese.jpg" },
+                            { "name": "Herb yoghurt", "price": 8, "image": "/food/ingredient-yoghurt.jpg" },
+                            { "name": "Avocado smash", "price": 12, "image": "/food/ingredient-avo-smash.jpg" },
+                            { "name": "Olive tapenade", "price": 10, "image": "/food/ingredient-tapenade.jpg" }
+                        ]
+                    }
+                ],
+                "presets": [
+                    { "name": "Citrus Chicken", "description": "Herb roast chicken, cucumber, micro herbs, citrus dressing.", "price": 85 },
+                    { "name": "Salmon Stack", "description": "Smoked salmon, dill, cucumber ribbons, caper cream.", "price": 98 },
+                    { "name": "Avocado Warmth", "description": "Avocado, rocket, chilli flakes, olive tapenade.", "price": 72 }
+                ]
+            }
+        }
+    }
+}

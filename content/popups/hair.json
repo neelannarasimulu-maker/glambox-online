@@ -1,0 +1,545 @@
+﻿{
+    "popupKey":  "hair",
+    "name":  "Hair Atelier",
+    "tagline":  "Luxury cuts, colour, and restorative rituals",
+    "theme":  {
+                  "primary":  "#7c3aed",
+                  "secondary":  "#ec4899",
+                  "accent":  "#f97316",
+                  "bg":  "#fdf4ff",
+                  "fg":  "#1f2937",
+                  "muted":  "#f3e8ff",
+                  "card":  "#ffffff",
+                  "border":  "#e9d5ff"
+              },
+    "images":  {
+                   "hero":  {
+                                "src":  "/hair/hair-hero.jpg",
+                                "alt":  "Hair Atelier hero"
+                            },
+                   "defaultCard":  {
+                                       "src":  "/hair/hair-card.jpg",
+                                       "alt":  "Hair service"
+                                   }
+               },
+    "nav":  {
+                "items":  [
+                              {
+                                  "id":  "info",
+                                  "label":  "Atelier",
+                                  "href":  "/explore/hair"
+                              },
+                              {
+                                  "id":  "services",
+                                  "label":  "Hair Services",
+                                  "href":  "/explore/hair/services"
+                              },
+                              {
+                                  "id":  "consultants",
+                                  "label":  "Hair Stylists",
+                                  "href":  "/explore/hair/consultants"
+                              },
+                              {
+                                  "id":  "gallery",
+                                  "label":  "Hair Lookbook",
+                                  "href":  "/explore/hair/gallery"
+                              },
+                              {
+                                  "id":  "products",
+                                  "label":  "Hair Care",
+                                  "href":  "/explore/hair/products"
+                              },
+                              {
+                                  "id":  "booking",
+                                  "label":  "Book Hair",
+                                  "href":  "/explore/hair/booking"
+                              }
+                          ]
+            },
+    "pages":  {
+                  "info":  {
+                               "hero":  {
+                                            "badge":  "Signature hair rituals",
+                                            "headline":  "Transformative hair artistry",
+                                            "subheadline":  "Meet stylists who blend runway technique with restorative care.",
+                                            "primaryCta":  {
+                                                               "label":  "Book hair services",
+                                                               "href":  "/explore/hair/booking"
+                                                           },
+                                            "secondaryCta":  {
+                                                                 "label":  "See more",
+                                                                 "href":  "/explore/hair/services"
+                                                             },
+                                            "image":  {
+                                                          "src":  "/hair/hair-hero.jpg",
+                                                          "alt":  "Hair Atelier interior"
+                                                      },
+                                            "trustCues":  [
+                                                              "Colour specialists",
+                                                              "Keratin experts",
+                                                              "Luxury tools"
+                                                          ]
+                                        },
+                               "about":  {
+                                             "headline":  "About Hair Atelier",
+                                             "body":  "Hair Atelier is a luminous studio built for people who want their hair to feel like a reflection of how they see themselves. We listen first, then design each cut, colour, and repair ritual around your lifestyle, texture, and confidence goals. Expect calming care, honest guidance, and finishing details that make the mirror moment feel personal."
+                                         },
+                               "highlights":  [
+                                                  {
+                                                      "title":  "Colour Atelier",
+                                                      "body":  "Dimensional colouring with gloss and shine finishes, mapped to your undertone and maintenance comfort for a radiant, lived-in look.",
+                                                      "icon":  "Paintbrush"
+                                                  },
+                                                  {
+                                                      "title":  "Repair lounge",
+                                                      "body":  "Bond-building treatments and scalp therapy that soothe, strengthen, and restore softness without weighing hair down.",
+                                                      "icon":  "ShieldCheck"
+                                                  },
+                                                  {
+                                                      "title":  "Editorial styling",
+                                                      "body":  "Event-ready looks for every occasion, from effortless polish to statement styling with lasting hold.",
+                                                      "icon":  "Sparkles"
+                                                  }
+                                              ]
+                           },
+                  "services":  {
+                                   "headline":  "Hair services",
+                                   "body":  "Choose bespoke services tailored to your hair goals.",
+                                   "relatedConsultants":  {
+                                                             "headline":  "Available stylists",
+                                                             "body":  "Book a hair stylist approved for this service.",
+                                                             "emptyMessage":  "Stylist availability varies by date. Check back soon."
+                                                         },
+                                   "services":  [
+                                                    {
+                                                        "id":  "signature-cut",
+                                                        "title":  "Signature Cut",
+                                                        "description":  "Precision shaping with consultation and styling. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R95.",
+                                                        "duration":  "60 min",
+                                                        "priceFrom":  "R95",
+                                                        "image":  {
+                                                                      "src":  "/hair/hair-service-1.jpg",
+                                                                      "alt":  "Signature cut"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Consultation",
+                                                                     "Styling"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A precision cut tailored to your face shape, hair density, and lifestyle. Includes a full consultation, sectioned shaping, and a finish that matches your desired movement and texture.",
+                                                                        "prepSteps":  [
+                                                                                          "Arrive with clean, detangled hair for accurate assessment.",
+                                                                                          "Bring a few reference photos to align on length and shape.",
+                                                                                          "Avoid heavy oils or styling products on the day of service."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Noah Rivera",
+                                                                                                       "Kai Alvarez"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Wait 24 hours before heavy heat styling.",
+                                                                                               "Use a lightweight leave-in to maintain softness.",
+                                                                                               "Book a maintenance trim every 6 to 8 weeks."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "noah",
+                                                                              "kai"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "color-glow",
+                                                        "title":  "Colour Glow",
+                                                        "description":  "Custom colour placement with gloss finish. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R180.",
+                                                        "duration":  "120 min",
+                                                        "priceFrom":  "R180",
+                                                        "image":  {
+                                                                      "src":  "/hair/hair-service-2.jpg",
+                                                                      "alt":  "Colour glow"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Colour",
+                                                                     "Gloss"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A custom colour placement with dimensional shine and toning for a high-gloss finish. Ideal for refreshing tone or adding depth while preserving hair health.",
+                                                                        "prepSteps":  [
+                                                                                          "Share any previous colour history during consultation.",
+                                                                                          "Arrive with dry hair for more accurate tone mapping.",
+                                                                                          "Avoid oil treatments for 48 hours beforehand."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Amara Chen",
+                                                                                                       "Sienna Patel"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Wait 48 hours before your first wash.",
+                                                                                               "Use sulfate-free, colour-safe shampoo.",
+                                                                                               "Schedule a gloss refresh every 6 to 8 weeks."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "amara",
+                                                                              "sienna"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "repair-ritual",
+                                                        "title":  "Repair Ritual",
+                                                        "description":  "Bond repair with scalp massage and hydration. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R130.",
+                                                        "duration":  "75 min",
+                                                        "priceFrom":  "R130",
+                                                        "image":  {
+                                                                      "src":  "/hair/hair-service-3.jpg",
+                                                                      "alt":  "Repair ritual"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Treatment",
+                                                                     "Scalp"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "Bond-repair therapy paired with scalp massage and hydration to restore strength and elasticity. Best for colour-treated or heat-stressed hair.",
+                                                                        "prepSteps":  [
+                                                                                          "Skip heavy styling products on the day of service.",
+                                                                                          "Let your stylist know about any scalp sensitivity.",
+                                                                                          "Bring your current product list for best recommendations."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Sienna Patel",
+                                                                                                       "Noah Rivera"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Limit heat styling for the next 72 hours.",
+                                                                                               "Use a weekly bond-repair mask.",
+                                                                                               "Hydrate with a lightweight leave-in between washes."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "sienna",
+                                                                              "noah"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "blowout-ritual",
+                                                        "title":  "Blowout Ritual",
+                                                        "description":  "Signature blowout with heat protection and finishing gloss. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R70.",
+                                                        "duration":  "45 min",
+                                                        "priceFrom":  "R70",
+                                                        "image":  {
+                                                                      "src":  "/hair/hair-service-4.jpg",
+                                                                      "alt":  "Blowout ritual"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Finish",
+                                                                     "Gloss"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A signature blowout that focuses on smoothness, body, and long-lasting finish. Includes heat protection and finishing gloss for shine.",
+                                                                        "prepSteps":  [
+                                                                                          "Arrive with clean, towel-dried hair if possible.",
+                                                                                          "Share your preferred volume and texture goals.",
+                                                                                          "Remove heavy hair accessories before service."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Kai Alvarez",
+                                                                                                       "Noah Rivera"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Use a silk wrap or loose bun overnight.",
+                                                                                               "Avoid moisture and steam for 24 hours.",
+                                                                                               "Refresh with a lightweight dry spray if needed."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "kai",
+                                                                              "noah"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "texture-reset",
+                                                        "title":  "Texture Reset",
+                                                        "description":  "Curl defining treatment with custom moisture blend. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R160.",
+                                                        "duration":  "90 min",
+                                                        "priceFrom":  "R160",
+                                                        "image":  {
+                                                                      "src":  "/hair/hair-service-5.jpg",
+                                                                      "alt":  "Texture reset"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Texture",
+                                                                     "Hydration"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A curl-defining treatment with customized moisture balance and shaping to enhance natural texture. Ideal for curls, coils, and waves.",
+                                                                        "prepSteps":  [
+                                                                                          "Arrive with hair in its natural state, if possible.",
+                                                                                          "Avoid heavy oils the day before.",
+                                                                                          "Share your typical wash-and-go routine."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Sienna Patel",
+                                                                                                       "Noah Rivera"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Use curl-friendly, sulfate-free products.",
+                                                                                               "Diffuse on low heat or air dry.",
+                                                                                               "Refresh midweek with a water-based mist."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "sienna",
+                                                                              "noah"
+                                                                          ]
+                                                    }
+                                                ]
+                               },
+                  "consultants":  {
+                                      "headline":  "Hair stylists",
+                                      "body":  "Meet stylists known for creativity, care, and technique.",
+                                      "relatedServices":  {
+                                                             "headline":  "Services by this stylist",
+                                                             "body":  "Choose a service this stylist performs.",
+                                                             "emptyMessage":  "Services are tailored during consultation."
+                                                         },
+                                      "consultants":  [
+                                                          {
+                                                              "id":  "amara",
+                                                              "name":  "Amara Chen",
+                                                              "role":  "Colour Director",
+                                                              "bio":  "Specialises in dimensional colour and glossing. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/hair/hair-consultant-1.jpg",
+                                                                            "alt":  "Amara Chen"
+                                                                        },
+                                                              "specialties":  [
+                                                                                  "Balayage",
+                                                                                  "Gloss",
+                                                                                  "Tone mapping"
+                                                                              ],
+                                                              "extendedBio":  "Amara leads colour strategy for the atelier, specialising in dimensional blends, glossing, and tone mapping. Her consultations focus on lifestyle, maintenance comfort, and long-term hair health.",
+                                                              "credentials":  [
+                                                                                  "Colour theory certification",
+                                                                                  "Advanced glossing",
+                                                                                  "Bond-repair systems"
+                                                                              ]
+                                                          },
+                                                          {
+                                                              "id":  "noah",
+                                                              "name":  "Noah Rivera",
+                                                              "role":  "Cutting Specialist",
+                                                              "bio":  "Precision cuts with modern, wearable shapes. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/hair/hair-consultant-2.jpg",
+                                                                            "alt":  "Noah Rivera"
+                                                                        },
+                                                              "specialties":  [
+                                                                                  "Bobs",
+                                                                                  "Layers",
+                                                                                  "Texture"
+                                                                              ],
+                                                              "extendedBio":  "Noah is a precision cutting specialist known for wearable shapes and clean architecture. He works with texture, growth patterns, and density to craft movement that lasts.",
+                                                              "credentials":  [
+                                                                                  "Precision cutting",
+                                                                                  "Texture shaping",
+                                                                                  "Editorial styling"
+                                                                              ]
+                                                          },
+                                                          {
+                                                              "id":  "sienna",
+                                                              "name":  "Sienna Patel",
+                                                              "role":  "Repair Lead",
+                                                              "bio":  "Restorative rituals for healthy, glossy hair. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/hair/hair-consultant-3.jpg",
+                                                                            "alt":  "Sienna Patel"
+                                                                        },
+                                                              "specialties":  [
+                                                                                  "Scalp therapy",
+                                                                                  "Bond repair",
+                                                                                  "Hydration"
+                                                                              ],
+                                                              "extendedBio":  "Sienna focuses on restorative hair rituals and scalp therapy. Her approach blends gentle care, science-backed treatments, and customized at-home plans.",
+                                                              "credentials":  [
+                                                                                  "Scalp therapy",
+                                                                                  "Bond repair",
+                                                                                  "Hydration protocols"
+                                                                              ]
+                                                          },
+                                                          {
+                                                              "id":  "kai",
+                                                              "name":  "Kai Alvarez",
+                                                              "role":  "Styling Artist",
+                                                              "bio":  "Elevated styling for events, shoots, and everyday polish. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/hair/hair-consultant-4.jpg",
+                                                                            "alt":  "Kai Alvarez"
+                                                                        },
+                                                              "specialties":  [
+                                                                                  "Updos",
+                                                                                  "Blowouts",
+                                                                                  "Texture styling"
+                                                                              ],
+                                                              "extendedBio":  "Kai specialises in elevated styling and event-ready finishes. From smooth blowouts to textured updos, Kai builds looks that hold up beautifully.",
+                                                              "credentials":  [
+                                                                                  "Event styling",
+                                                                                  "Blowout mastery",
+                                                                                  "Texture finishing"
+                                                                              ]
+                                                          }
+                                                      ]
+                                  },
+                  "gallery":  {
+                                  "headline":  "Hair lookbook",
+                                  "body":  "A lookbook of signature styles and finishes.",
+                                  "items":  [
+                                                {
+                                                    "id":  "gallery-1",
+                                                    "title":  "Silk Press",
+                                                    "caption":  "Ultra-smooth finish with reflective shine.",
+                                                    "image":  {
+                                                                  "src":  "/hair/hair-gallery-1.jpg",
+                                                                  "alt":  "Silk press"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-2",
+                                                    "title":  "Blonde Blend",
+                                                    "caption":  "Soft dimension with cool tones.",
+                                                    "image":  {
+                                                                  "src":  "/hair/hair-gallery-2.jpg",
+                                                                  "alt":  "Blonde blend"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-3",
+                                                    "title":  "Textured Layers",
+                                                    "caption":  "Movement and shape for natural texture.",
+                                                    "image":  {
+                                                                  "src":  "/hair/hair-gallery-3.jpg",
+                                                                  "alt":  "Textured layers"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-4",
+                                                    "title":  "Glass Shine",
+                                                    "caption":  "High-gloss finish with mirrored sheen.",
+                                                    "image":  {
+                                                                  "src":  "/hair/hair-gallery-4.jpg",
+                                                                  "alt":  "Glass shine"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-5",
+                                                    "title":  "Soft Waves",
+                                                    "caption":  "Loose waves with luminous dimension.",
+                                                    "image":  {
+                                                                  "src":  "/hair/hair-gallery-5.jpg",
+                                                                  "alt":  "Soft waves"
+                                                              }
+                                                }
+                                            ]
+                              },
+                  "products":  {
+                                   "headline":  "Hair care",
+                                   "body":  "Care sets curated by Glambox stylists.",
+                                   "products":  [
+                                                    {
+                                                        "id":  "shine-oil",
+                                                        "name":  "Luxe Shine Oil",
+                                                        "description":  "Weightless glow and heat protection.",
+                                                        "price":  "R42",
+                                                        "image":  {
+                                                                      "src":  "/hair/hair-product-1.jpg",
+                                                                      "alt":  "Luxe Shine Oil"
+                                                                  },
+                                                        "badge":  "Best seller"
+                                                    },
+                                                    {
+                                                        "id":  "repair-mask",
+                                                        "name":  "Bond Repair Mask",
+                                                        "description":  "Deep treatment for strength and softness.",
+                                                        "price":  "R58",
+                                                        "image":  {
+                                                                      "src":  "/hair/hair-product-2.jpg",
+                                                                      "alt":  "Bond Repair Mask"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "id":  "scalp-serum",
+                                                        "name":  "Scalp Reset Serum",
+                                                        "description":  "Nourishing serum for balance and lift.",
+                                                        "price":  "R49",
+                                                        "image":  {
+                                                                      "src":  "/hair/hair-product-3.jpg",
+                                                                      "alt":  "Scalp Reset Serum"
+                                                                  },
+                                                        "badge":  "New"
+                                                    },
+                                                    {
+                                                        "id":  "curl-cream",
+                                                        "name":  "Curl Sculpt Cream",
+                                                        "description":  "Defines texture with soft hold.",
+                                                        "price":  "R38",
+                                                        "image":  {
+                                                                      "src":  "/hair/hair-product-4.jpg",
+                                                                      "alt":  "Curl Sculpt Cream"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "id":  "heat-veil",
+                                                        "name":  "Heat Veil Spray",
+                                                        "description":  "Thermal protection with lightweight mist.",
+                                                        "price":  "R36",
+                                                        "image":  {
+                                                                      "src":  "/hair/hair-product-5.jpg",
+                                                                      "alt":  "Heat Veil Spray"
+                                                                  }
+                                                    }
+                                                ]
+                               },
+                  "booking":  {
+                                  "headline":  "Book Hair Atelier",
+                                  "body":  "Choose a service and lock in your stylist.",
+                                  "steps":  [
+                                                {
+                                                    "title":  "Select your service",
+                                                    "body":  "Pick the treatment or cut that fits your goals."
+                                                },
+                                                {
+                                                    "title":  "Meet your stylist",
+                                                    "body":  "Choose the Hair Atelier artist and time that works for you."
+                                                },
+                                                {
+                                                    "title":  "Confirm your visit",
+                                  "body":  "Receive a personalised prep guide and reminders."
+                                                }
+                                            ],
+                                  "cta":  {
+                                              "label":  "Book hair services",
+                                              "href":  "/book"
+                                          },
+                                  "widget":  {
+                                                 "headline":  "Finalize your booking",
+                                                 "body":  "Select your consultant, date, and time. You'll see a confirmation instantly.",
+                                                 "serviceLabel":  "Service",
+                                                 "consultantLabel":  "Consultant",
+                                                 "dateLabel":  "Date",
+                                                 "timeLabel":  "Time",
+                                                 "confirmLabel":  "Confirm booking",
+                                                 "confirmationTitle":  "Booking confirmed",
+                                                 "confirmationBody":  "We will send a reminder with prep details.",
+                                                 "missingSelection":  "Select a date and time to confirm.",
+                                                 "emptyService":  "No services available right now.",
+                                                 "emptyConsultant":  "No consultants available for this service.",
+                                                 "timeOptions":  [
+                                                                     "09:00",
+                                                                     "10:30",
+                                                                     "12:00",
+                                                                     "14:00",
+                                                                     "15:30",
+                                                                     "17:00"
+                                                                 ]
+                                             }
+                              }
+              }
+}

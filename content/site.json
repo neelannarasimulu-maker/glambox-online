@@ -1,0 +1,262 @@
+{
+  "brand": {
+    "name": "Glambox",
+    "tagline": "Premium beauty popups with instant booking",
+    "logo": {
+      "src": "/logo/glambox-logo.png",
+      "alt": "Glambox logo"
+    }
+  },
+  "nav": {
+    "items": [
+      {
+        "id": "explore",
+        "label": "Explore",
+        "type": "dropdown",
+        "children": [
+          { "id": "hair", "label": "Hair", "href": "/explore/hair" },
+          { "id": "nails", "label": "Nails", "href": "/explore/nails" },
+          { "id": "wellness", "label": "Wellness", "href": "/explore/wellness" },
+          { "id": "food", "label": "Food", "href": "/explore/food" }
+        ]
+      },
+      { "id": "book", "label": "Book", "type": "link", "href": "/book" }
+    ]
+  },
+  "footer": {
+    "columns": [
+      {
+        "title": "Discover",
+        "links": [
+          { "label": "Explore popups", "href": "/explore" },
+          { "label": "Book an appointment", "href": "/book" }
+        ]
+      },
+      {
+        "title": "Support",
+        "links": [
+          { "label": "Client care", "href": "/support" },
+          { "label": "FAQs", "href": "/faq" }
+        ]
+      },
+      {
+        "title": "Company",
+        "links": [
+          { "label": "About Glambox", "href": "/about" },
+          { "label": "Careers", "href": "/careers" }
+        ]
+      }
+    ],
+    "legal": {
+      "copyright": "© 2026 Glambox. All rights reserved.",
+      "termsHref": "/terms",
+      "privacyHref": "/privacy"
+    }
+  },
+  "routes": {
+    "exploreIndexHref": "/explore",
+    "bookHref": "/book"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Glitter-ready experiences",
+      "headline": "Glambox is where your glow story begins",
+      "subheadline": "Step into luminous popups designed to feel like a fresh start: expert hands, radiant finishes, and rituals that change how you see yourself.",
+      "primaryCta": { "label": "Explore popups", "href": "/explore" },
+      "secondaryCta": { "label": "Book your glow", "href": "/book" },
+      "image": { "src": "/hero/landing-hero.jpg", "alt": "Glambox storefront" },
+      "trustCues": ["Designed for every age", "Artistry-first teams", "Instant booking"]
+    },
+    "sections": [
+      {
+        "id": "features",
+        "type": "features",
+        "headline": "Colour, care, and confidence in every visit",
+        "body": "Glambox is built for women who want beauty to feel joyful, expressive, and deeply personal.",
+        "items": [
+          {
+            "title": "Heart-first consultations",
+            "body": "We listen to your story, then design a look that feels like you.",
+            "icon": "Sparkles"
+          },
+          {
+            "title": "Glittering spaces",
+            "body": "Tuscan warmth, golden light, and playful glam accents everywhere you look.",
+            "icon": "Palette"
+          },
+          {
+            "title": "Glow-now booking",
+            "body": "Pick your popup, choose your time, and step into the glow.",
+            "icon": "CalendarCheck"
+          }
+        ]
+      },
+      {
+        "id": "cta",
+        "type": "cta",
+        "headline": "Beauty that supports women’s wellbeing",
+        "body": "Glambox is a pause in a busy life — a space that honours women’s health, confidence, and care at every stage.",
+        "items": [
+          {
+            "title": "Stress‑softening rituals",
+            "body": "We design appointments that calm the nervous system and leave you feeling steadier.",
+            "icon": "Heart"
+          },
+          {
+            "title": "Care for every season",
+            "body": "From new chapters to new priorities, our teams tailor care to how your body and life feel now.",
+            "icon": "Leaf"
+          },
+          {
+            "title": "Joy as self‑care",
+            "body": "Small moments of beauty can be powerful — we make them intentional and restorative.",
+            "icon": "Sun"
+          }
+        ],
+        "cta": { "label": "Start exploring", "href": "/explore" }
+      }
+    ]
+  },
+  "explore": {
+    "headline": "Choose the glow that matches your life",
+    "body": "Each popup is a different love letter — hair, nails, and wellness designed for the way you want to feel.",
+    "cards": [
+      {
+        "popupKey": "hair",
+        "title": "Hair Atelier",
+        "body": "Signature cuts, colour artistry, and restorative rituals that make you feel radiant.",
+        "href": "/explore/hair",
+        "image": { "src": "/hair/hair-hero.jpg", "alt": "Hair popup" }
+      },
+      {
+        "popupKey": "nails",
+        "title": "Nail Studio",
+        "body": "Polished manicures, nail art, and trend-led finishes with a feel-good twist.",
+        "href": "/explore/nails",
+        "image": { "src": "/nails/nails-hero.jpg", "alt": "Nails popup" }
+      },
+      {
+        "popupKey": "wellness",
+        "title": "Wellness Lounge",
+        "body": "Skin therapy, mindful recovery, and glow rituals to reset your whole energy.",
+        "href": "/explore/wellness",
+        "image": { "src": "/wellness/wellness-hero.jpg", "alt": "Wellness popup" }
+      },
+      {
+        "popupKey": "food",
+        "title": "Glambox Kitchen",
+        "body": "Custom light meals, bagels, croissants, and chef-crafted presets.",
+        "href": "/explore/food",
+        "image": { "src": "/food/food-hero.jpg", "alt": "Food popup" }
+      }
+    ]
+  },
+  "bookingPage": {
+    "headline": "Book a Glambox visit",
+    "body": "Start with a popup, then choose the service, consultant, and time that fits your day.",
+    "popupLinksHeadline": "Choose a popup",
+    "popupLinksBody": "Visit any popup to browse services, consultants, and inspiration.",
+    "popupLinksCtaLabel": "View popup",
+    "fullBookingCta": { "label": "Jump to full booking", "href": "#full-booking" },
+    "bookingHeadline": "Complete your booking",
+    "bookingBody": "Select a popup, pick a service, and book with a recommended consultant.",
+    "popupLabel": "Popup",
+    "serviceLabel": "Service",
+    "consultantLabel": "Consultant",
+    "dateLabel": "Date",
+    "timeLabel": "Time",
+    "confirmLabel": "Confirm booking",
+    "confirmationTitle": "Booking confirmed",
+    "confirmationBody": "We will send a reminder with prep details.",
+    "missingSelection": "Select a date and time to confirm.",
+    "emptyService": "No services available right now.",
+    "emptyConsultant": "No consultants available for this service.",
+    "recommendedLabel": "Recommended",
+    "timeOptions": ["09:00", "10:30", "12:00", "14:00", "15:30", "17:00"]
+  },
+  "faqPage": {
+    "headline": "Frequently asked questions",
+    "body": "Thoughtful answers to help you feel confident before your visit.",
+    "categories": [
+      {
+        "title": "Booking",
+        "items": [
+          {
+            "question": "How do I book a service?",
+            "answer": "Choose your popup, select a service, and reserve a time. You will see confirmation details instantly."
+          },
+          {
+            "question": "Can I change or reschedule?",
+            "answer": "Yes. You can reschedule from your dashboard or by contacting Client Care up to 24 hours before your appointment."
+          },
+          {
+            "question": "Do you take walk-ins?",
+            "answer": "We recommend booking ahead to guarantee availability, but we can often accommodate same-day requests."
+          }
+        ]
+      },
+      {
+        "title": "Services & Consultants",
+        "items": [
+          {
+            "question": "How are consultants matched to services?",
+            "answer": "Each service lists the consultants trained for that treatment so you always book with a specialist."
+          },
+          {
+            "question": "Can I request a specific consultant?",
+            "answer": "Absolutely. Choose your preferred consultant during booking or note your request for Client Care."
+          },
+          {
+            "question": "What should I bring to my appointment?",
+            "answer": "Bring inspiration photos if helpful, and let us know about allergies, sensitivities, or preferences."
+          }
+        ]
+      },
+      {
+        "title": "Products & Orders",
+        "items": [
+          {
+            "question": "Do you ship products?",
+            "answer": "Yes. We offer standard delivery across major metro areas with tracking provided at checkout."
+          },
+          {
+            "question": "Can I return a product?",
+            "answer": "Unopened products can be returned within 14 days. Contact Client Care for assistance."
+          },
+          {
+            "question": "Are products suitable for sensitive skin?",
+            "answer": "Many are. Share your sensitivities in your health profile so we can recommend the best options."
+          }
+        ]
+      }
+    ]
+  },
+  "supportPage": {
+    "headline": "Client Care",
+    "body": "We are here to support your bookings, purchases, and wellness preferences.",
+    "channels": [
+      {
+        "label": "WhatsApp",
+        "value": "+27 83 555 0142",
+        "description": "Fastest response for bookings and reschedules."
+      },
+      {
+        "label": "Telephone",
+        "value": "+27 21 555 0198",
+        "description": "Speak with a Client Care specialist."
+      },
+      {
+        "label": "Email",
+        "value": "clientcare@glambox.com",
+        "description": "Detailed requests and order support."
+      }
+    ],
+    "hours": [
+      "24/7 support — someone is always available to chat."
+    ]
+  },
+  "uiKit": {
+    "headline": "Glambox UI Kit",
+    "body": "Reusable components powered by JSON-first content and theme tokens."
+  }
+}

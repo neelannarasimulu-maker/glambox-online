@@ -1,0 +1,544 @@
+﻿{
+    "popupKey":  "wellness",
+    "name":  "Wellness Lounge",
+    "tagline":  "Skin therapy, mindful recovery, and glow rituals",
+    "theme":  {
+                  "primary":  "#14b8a6",
+                  "secondary":  "#38bdf8",
+                  "accent":  "#84cc16",
+                  "bg":  "#ecfeff",
+                  "fg":  "#0f172a",
+                  "muted":  "#cffafe",
+                  "card":  "#ffffff",
+                  "border":  "#99f6e4"
+              },
+    "images":  {
+                   "hero":  {
+                                "src":  "/wellness/wellness-hero.jpg",
+                                "alt":  "Wellness Lounge hero"
+                            },
+                   "defaultCard":  {
+                                       "src":  "/wellness/wellness-card.jpg",
+                                       "alt":  "Wellness ritual"
+                                   }
+               },
+    "nav":  {
+                "items":  [
+                              {
+                                  "id":  "info",
+                                  "label":  "Lounge",
+                                  "href":  "/explore/wellness"
+                              },
+                              {
+                                  "id":  "services",
+                                  "label":  "Wellness Therapies",
+                                  "href":  "/explore/wellness/services"
+                              },
+                              {
+                                  "id":  "consultants",
+                                  "label":  "Wellness Guides",
+                                  "href":  "/explore/wellness/consultants"
+                              },
+                              {
+                                  "id":  "gallery",
+                                  "label":  "Ritual Lookbook",
+                                  "href":  "/explore/wellness/gallery"
+                              },
+                              {
+                                  "id":  "products",
+                                  "label":  "Wellness Essentials",
+                                  "href":  "/explore/wellness/products"
+                              },
+                              {
+                                  "id":  "booking",
+                                  "label":  "Book Wellness",
+                                  "href":  "/explore/wellness/booking"
+                              }
+                          ]
+            },
+    "pages":  {
+                  "info":  {
+                               "hero":  {
+                                            "badge":  "Mindful wellness",
+                                            "headline":  "Glow rituals for skin and soul",
+                                            "subheadline":  "Restorative therapies designed for balance, clarity, and radiance.",
+                                            "primaryCta":  {
+                                                               "label":  "Book wellness",
+                                                               "href":  "/explore/wellness/booking"
+                                                           },
+                                            "secondaryCta":  {
+                                                                 "label":  "See more",
+                                                                 "href":  "/explore/wellness/services"
+                                                             },
+                                            "image":  {
+                                                          "src":  "/wellness/wellness-hero.jpg",
+                                                          "alt":  "Wellness Lounge interior"
+                                                      },
+                                            "trustCues":  [
+                                                              "Holistic rituals",
+                                                              "Skin experts",
+                                                              "Mindful recovery"
+                                                          ]
+                                        },
+                               "about":  {
+                                             "headline":  "About Wellness Lounge",
+                                             "body":  "Wellness Lounge is a quiet sanctuary for skin, breath, and recovery. We slow the pace so you can reset, then tailor each ritual to how you feel today — your energy, your skin, your need for calm. Expect grounding care, gentle expertise, and a return to yourself that lasts beyond the appointment."
+                                         },
+                               "highlights":  [
+                                                  {
+                                                      "title":  "Skin therapy",
+                                                      "body":  "LED, hydration, and glow-facials tailored to your skin’s needs, texture, and current sensitivity level.",
+                                                      "icon":  "Sun"
+                                                  },
+                                                  {
+                                                      "title":  "Recovery studio",
+                                                      "body":  "Compression, massage, and restorative rituals that release tension and help your body feel lighter.",
+                                                      "icon":  "Leaf"
+                                                  },
+                                                  {
+                                                      "title":  "Mindful reset",
+                                                      "body":  "Breathwork and calm-focused experiences that quiet the mind and ease you back into balance.",
+                                                      "icon":  "Sparkles"
+                                                  }
+                                              ]
+                           },
+                  "services":  {
+                                   "headline":  "Wellness therapies",
+                                   "body":  "Find therapies tailored to your glow goals.",
+                                   "relatedConsultants":  {
+                                                             "headline":  "Available consultants",
+                                                             "body":  "Book a consultant who performs this therapy.",
+                                                             "emptyMessage":  "Consultant availability varies by date. Check back soon."
+                                                         },
+                                   "services":  [
+                                                    {
+                                                        "id":  "hydra-facial",
+                                                        "title":  "Hydra Facial",
+                                                        "description":  "Deep cleansing with hydration boost. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R150.",
+                                                        "duration":  "70 min",
+                                                        "priceFrom":  "R150",
+                                                        "image":  {
+                                                                      "src":  "/wellness/wellness-service-1.jpg",
+                                                                      "alt":  "Hydra facial"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Hydration",
+                                                                     "Glow"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A deep-cleansing facial with targeted hydration and glow-boosting serums. Includes gentle exfoliation and a calming mask.",
+                                                                        "prepSteps":  [
+                                                                                          "Avoid retinol or strong acids for 48 hours.",
+                                                                                          "Arrive makeup-free if possible.",
+                                                                                          "Hydrate well the day before your visit."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Leila Hart",
+                                                                                                       "Yasmin Reed"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Avoid direct sun for 24 hours.",
+                                                                                               "Use gentle cleanser and SPF daily.",
+                                                                                               "Skip exfoliants for 3 days."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "leila",
+                                                                              "yasmin"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "recovery-ritual",
+                                                        "title":  "Recovery Ritual",
+                                                        "description":  "Compression, stretch, and guided recovery. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R120.",
+                                                        "duration":  "60 min",
+                                                        "priceFrom":  "R120",
+                                                        "image":  {
+                                                                      "src":  "/wellness/wellness-service-2.jpg",
+                                                                      "alt":  "Recovery ritual"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Recovery",
+                                                                     "Balance"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A guided recovery session combining compression, stretch, and breathwork for muscle reset and circulation.",
+                                                                        "prepSteps":  [
+                                                                                          "Wear comfortable, flexible clothing.",
+                                                                                          "Arrive 10 minutes early to settle in.",
+                                                                                          "Share any injuries or sensitivities upfront."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Dante Flores",
+                                                                                                       "Marco Lee"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Hydrate well for the next 24 hours.",
+                                                                                               "Take a gentle walk later in the day.",
+                                                                                               "Schedule follow-ups weekly for best results."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "dante",
+                                                                              "marco"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "led-glow",
+                                                        "title":  "LED Glow Session",
+                                                        "description":  "Light therapy for radiance and clarity. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R95.",
+                                                        "duration":  "45 min",
+                                                        "priceFrom":  "R95",
+                                                        "image":  {
+                                                                      "src":  "/wellness/wellness-service-3.jpg",
+                                                                      "alt":  "LED glow"
+                                                                  },
+                                                        "tags":  [
+                                                                     "LED",
+                                                                     "Calm"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A calming LED session designed to support clarity and glow. Includes a soothing mask and scalp relaxation.",
+                                                                        "prepSteps":  [
+                                                                                          "Avoid heavy makeup and sunscreen before arrival.",
+                                                                                          "Share any recent skin treatments with your guide.",
+                                                                                          "Arrive a few minutes early for a skin assessment."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Leila Hart",
+                                                                                                       "Yasmin Reed"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Use a hydrating serum that evening.",
+                                                                                               "Avoid harsh exfoliation for 48 hours.",
+                                                                                               "Wear SPF daily for the week following."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "leila",
+                                                                              "yasmin"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "lymphatic-sculpt",
+                                                        "title":  "Lymphatic Sculpt",
+                                                        "description":  "Gentle drainage massage for de-puffing and tone. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R135.",
+                                                        "duration":  "55 min",
+                                                        "priceFrom":  "R135",
+                                                        "image":  {
+                                                                      "src":  "/wellness/wellness-service-4.jpg",
+                                                                      "alt":  "Lymphatic sculpt"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Sculpt",
+                                                                     "Detox"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A gentle lymphatic massage focused on de-puffing and sculpting. Supports circulation, tone, and overall recovery.",
+                                                                        "prepSteps":  [
+                                                                                          "Hydrate well the day before your session.",
+                                                                                          "Wear comfortable clothing and avoid heavy meals.",
+                                                                                          "Share any swelling concerns or goals."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Dante Flores",
+                                                                                                       "Yasmin Reed"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Drink plenty of water post-session.",
+                                                                                               "Avoid alcohol for 24 hours.",
+                                                                                               "Light movement supports continued drainage."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "dante",
+                                                                              "yasmin"
+                                                                          ]
+                                                    },
+                                                    {
+                                                        "id":  "sound-reset",
+                                                        "title":  "Sound Reset",
+                                                        "description":  "Guided sound bath with breathwork and calming oils. Includes consultation, prep, finishing, and aftercare guidance. Pricing starts at R90.",
+                                                        "duration":  "50 min",
+                                                        "priceFrom":  "R90",
+                                                        "image":  {
+                                                                      "src":  "/wellness/wellness-service-5.jpg",
+                                                                      "alt":  "Sound reset"
+                                                                  },
+                                                        "tags":  [
+                                                                     "Mindfulness",
+                                                                     "Recovery"
+                                                                 ],
+                                                        "details":  {
+                                                                        "longDescription":  "A restorative sound bath with guided breathwork and calming oils to support nervous system reset.",
+                                                                        "prepSteps":  [
+                                                                                          "Arrive in comfortable clothing.",
+                                                                                          "Eat a light meal beforehand.",
+                                                                                          "Silence devices to stay grounded."
+                                                                                      ],
+                                                                        "recommendedConsultants":  [
+                                                                                                       "Marco Lee",
+                                                                                                       "Dante Flores"
+                                                                                                   ],
+                                                                        "aftercareSteps":  [
+                                                                                               "Take 10 minutes of quiet rest afterward.",
+                                                                                               "Hydrate and avoid caffeine for a few hours.",
+                                                                                               "Journal reflections to track progress."
+                                                                                           ]
+                                                                    },
+                                                        "consultantIds":  [
+                                                                              "marco",
+                                                                              "dante"
+                                                                          ]
+                                                    }
+                                                ]
+                               },
+                  "consultants":  {
+                                      "headline":  "Wellness guides",
+                                      "body":  "Guides trained in skin care and recovery.",
+                                      "relatedServices":  {
+                                                             "headline":  "Services by this guide",
+                                                             "body":  "Choose a service this guide performs.",
+                                                             "emptyMessage":  "Services are tailored during consultation."
+                                                         },
+                                      "consultants":  [
+                                                          {
+                                                              "id":  "leila",
+                                                              "name":  "Leila Hart",
+                                                              "role":  "Skin Therapist",
+                                                              "bio":  "Focuses on hydration and barrier support. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/wellness/wellness-consultant-1.jpg",
+                                                                            "alt":  "Leila Hart"
+                                                                        },
+                                                              "specialties":  [
+                                                                                  "Hydra facials",
+                                                                                  "LED",
+                                                                                  "Masking"
+                                                                              ],
+                                                              "extendedBio":  "Leila is a skin therapist specialising in hydration and barrier support. She tailors treatments to seasonal changes and long-term skin goals.",
+                                                              "credentials":  [
+                                                                                  "Hydration therapy",
+                                                                                  "LED treatments",
+                                                                                  "Masking protocols"
+                                                                              ]
+                                                          },
+                                                          {
+                                                              "id":  "dante",
+                                                              "name":  "Dante Flores",
+                                                              "role":  "Recovery Coach",
+                                                              "bio":  "Guided recovery sessions with mindful breathwork. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/wellness/wellness-consultant-2.jpg",
+                                                                            "alt":  "Dante Flores"
+                                                                        },
+                                                              "specialties":  [
+                                                                                  "Stretch",
+                                                                                  "Compression",
+                                                                                  "Breathwork"
+                                                                              ],
+                                                              "extendedBio":  "Dante is a recovery coach who blends compression therapy, guided stretch, and breathwork. His sessions prioritize balance, circulation, and calm.",
+                                                              "credentials":  [
+                                                                                  "Recovery coaching",
+                                                                                  "Breathwork",
+                                                                                  "Compression therapy"
+                                                                              ]
+                                                          },
+                                                          {
+                                                              "id":  "yasmin",
+                                                              "name":  "Yasmin Reed",
+                                                              "role":  "Wellness Curator",
+                                                              "bio":  "Builds personalised wellness rituals and schedules. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/wellness/wellness-consultant-3.jpg",
+                                                                            "alt":  "Yasmin Reed"
+                                                                        },
+                                                              "specialties":  [
+                                                                                  "Ritual design",
+                                                                                  "Recovery",
+                                                                                  "Glow planning"
+                                                                              ],
+                                                              "extendedBio":  "Yasmin designs personalised wellness rituals that integrate skincare and recovery. She brings structure and clarity to long-term care plans.",
+                                                              "credentials":  [
+                                                                                  "Ritual planning",
+                                                                                  "Glow therapy",
+                                                                                  "Recovery programmes"
+                                                                              ]
+                                                          },
+                                                          {
+                                                              "id":  "marco",
+                                                              "name":  "Marco Lee",
+                                                              "role":  "Mindfulness Guide",
+                                                              "bio":  "Creates calming experiences focused on nervous system reset. Known for thoughtful consultations and tailored recommendations.",
+                                                              "image":  {
+                                                                            "src":  "/wellness/wellness-consultant-4.jpg",
+                                                                            "alt":  "Marco Lee"
+                                                                        },
+                                                              "specialties":  [
+                                                                                  "Sound baths",
+                                                                                  "Breathwork",
+                                                                                  "Meditation"
+                                                                              ],
+                                                              "extendedBio":  "Marco is a mindfulness guide specialising in nervous-system reset and sound therapy. His sessions emphasise grounding and restorative calm.",
+                                                              "credentials":  [
+                                                                                  "Sound baths",
+                                                                                  "Mindfulness",
+                                                                                  "Meditation coaching"
+                                                                              ]
+                                                          }
+                                                      ]
+                                  },
+                  "gallery":  {
+                                  "headline":  "Ritual lookbook",
+                                  "body":  "A visual guide to calming rituals and spaces.",
+                                  "items":  [
+                                                {
+                                                    "id":  "gallery-1",
+                                                    "title":  "Hydration Suite",
+                                                    "caption":  "A serene room with soft light and calming tones.",
+                                                    "image":  {
+                                                                  "src":  "/wellness/wellness-gallery-1.jpg",
+                                                                  "alt":  "Hydration suite"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-2",
+                                                    "title":  "Recovery Pods",
+                                                    "caption":  "Compression and stretch pods for reset sessions.",
+                                                    "image":  {
+                                                                  "src":  "/wellness/wellness-gallery-2.jpg",
+                                                                  "alt":  "Recovery pods"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-3",
+                                                    "title":  "Glow Lounge",
+                                                    "caption":  "LED treatments surrounded by ambient sound.",
+                                                    "image":  {
+                                                                  "src":  "/wellness/wellness-gallery-3.jpg",
+                                                                  "alt":  "Glow lounge"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-4",
+                                                    "title":  "Breath Studio",
+                                                    "caption":  "Quiet space for guided breathwork and reset.",
+                                                    "image":  {
+                                                                  "src":  "/wellness/wellness-gallery-4.jpg",
+                                                                  "alt":  "Breath studio"
+                                                              }
+                                                },
+                                                {
+                                                    "id":  "gallery-5",
+                                                    "title":  "Herbal Bar",
+                                                    "caption":  "Restorative infusions and calming blends.",
+                                                    "image":  {
+                                                                  "src":  "/wellness/wellness-gallery-5.jpg",
+                                                                  "alt":  "Herbal bar"
+                                                              }
+                                                }
+                                            ]
+                              },
+                  "products":  {
+                                   "headline":  "Wellness essentials",
+                                   "body":  "Glow-forward essentials to extend the ritual.",
+                                   "products":  [
+                                                    {
+                                                        "id":  "hydration-mist",
+                                                        "name":  "Hydration Mist",
+                                                        "description":  "Soothing mist for instant moisture.",
+                                                        "price":  "R34",
+                                                        "image":  {
+                                                                      "src":  "/wellness/wellness-product-1.jpg",
+                                                                      "alt":  "Hydration Mist"
+                                                                  },
+                                                        "badge":  "New"
+                                                    },
+                                                    {
+                                                        "id":  "glow-serum",
+                                                        "name":  "Glow Serum",
+                                                        "description":  "Vitamin-rich serum for radiant skin.",
+                                                        "price":  "R68",
+                                                        "image":  {
+                                                                      "src":  "/wellness/wellness-product-2.jpg",
+                                                                      "alt":  "Glow Serum"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "id":  "calm-balm",
+                                                        "name":  "Calm Balm",
+                                                        "description":  "Restorative balm with aromatherapy notes.",
+                                                        "price":  "R40",
+                                                        "image":  {
+                                                                      "src":  "/wellness/wellness-product-3.jpg",
+                                                                      "alt":  "Calm Balm"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "id":  "ritual-oil",
+                                                        "name":  "Ritual Body Oil",
+                                                        "description":  "Silky oil for after-session glow.",
+                                                        "price":  "R46",
+                                                        "image":  {
+                                                                      "src":  "/wellness/wellness-product-4.jpg",
+                                                                      "alt":  "Ritual Body Oil"
+                                                                  }
+                                                    },
+                                                    {
+                                                        "id":  "sleep-soak",
+                                                        "name":  "Sleep Soak",
+                                                        "description":  "Magnesium soak for calm recovery.",
+                                                        "price":  "R32",
+                                                        "image":  {
+                                                                      "src":  "/wellness/wellness-product-5.jpg",
+                                                                      "alt":  "Sleep Soak"
+                                                                  }
+                                                    }
+                                                ]
+                               },
+                  "booking":  {
+                                  "headline":  "Book Wellness Lounge",
+                                  "body":  "Reserve your ritual and build a wellness plan.",
+                                  "steps":  [
+                                                {
+                                                    "title":  "Select a ritual",
+                                                    "body":  "Choose skin therapy, recovery, or glow sessions."
+                                                },
+                                                {
+                                                    "title":  "Pick your guide",
+                                                    "body":  "Meet Wellness Lounge guides matched to your goals."
+                                                },
+                                                {
+                                                    "title":  "Confirm your plan",
+                                                    "body":  "Receive a customized plan and reminders."
+                                                }
+                                            ],
+                                  "cta":  {
+                                              "label":  "Book wellness",
+                                              "href":  "/book"
+                                          },
+                                  "widget":  {
+                                                 "headline":  "Finalize your booking",
+                                                 "body":  "Select your consultant, date, and time. You'll see a confirmation instantly.",
+                                                 "serviceLabel":  "Service",
+                                                 "consultantLabel":  "Consultant",
+                                                 "dateLabel":  "Date",
+                                                 "timeLabel":  "Time",
+                                                 "confirmLabel":  "Confirm booking",
+                                                 "confirmationTitle":  "Booking confirmed",
+                                                 "confirmationBody":  "We will send a reminder with prep details.",
+                                                 "missingSelection":  "Select a date and time to confirm.",
+                                                 "emptyService":  "No services available right now.",
+                                                 "emptyConsultant":  "No consultants available for this service.",
+                                                 "timeOptions":  [
+                                                                     "09:00",
+                                                                     "10:30",
+                                                                     "12:00",
+                                                                     "14:00",
+                                                                     "15:30",
+                                                                     "17:00"
+                                                                 ]
+                                             }
+                              }
+              }
+}
