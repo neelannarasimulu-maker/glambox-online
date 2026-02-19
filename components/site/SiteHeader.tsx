@@ -98,7 +98,7 @@ export function SiteHeader({ config }: SiteHeaderProps) {
             </Link>
           ))}
           <Link
-            href={isAuthenticated ? "/dashboard" : "/login"}
+            href={isAuthenticated ? "/dashboard" : "/auth/login"}
             className="text-sm font-semibold text-white/80 hover:text-white"
           >
             {isAuthenticated ? "My Dashboard" : "Login"}
@@ -158,7 +158,7 @@ export function SiteHeader({ config }: SiteHeaderProps) {
                     </Link>
                   ))}
                   <Link
-                    href={isAuthenticated ? "/dashboard" : "/login"}
+                    href={isAuthenticated ? "/dashboard" : "/auth/login"}
                     className="text-sm font-semibold text-[var(--fg)]"
                   >
                     {isAuthenticated ? "My Dashboard" : "Login"}
