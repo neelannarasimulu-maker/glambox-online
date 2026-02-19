@@ -13,10 +13,10 @@ import { getChatStatus } from "@/lib/chatStatus";
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { isAuthenticated, email } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   useEffect(() => {
     if (!isAuthenticated) {
-      router.replace("/login");
+      router.replace("/auth/login");
     }
   }, [isAuthenticated, router]);
 
@@ -81,7 +81,7 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-4xl font-semibold text-[var(--fg)]">Your Dashboard</h1>
           <p className="mt-2 text-[var(--muted-foreground)]">
-            Signed in as {email ?? "member"}
+            Signed in as {user?.email ?? "member"}
           </p>
         </div>
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
