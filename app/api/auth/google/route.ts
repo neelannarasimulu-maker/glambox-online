@@ -55,7 +55,17 @@ export async function POST(request: Request) {
 
     const user = await get<UserRow>("SELECT * FROM users WHERE email = ?", [normalizedEmail]);
     return NextResponse.json({ user: user ? toSessionUser(user) : null });
-  } catch {
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message.includes("Missing GOOGLE_CLIENT_ID")
+    ) {
+      return NextResponse.json(
+        { error: "Google sign-in is not configured on the server." },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json({ error: "Google sign-in could not be verified." }, { status: 401 });
   }
 }

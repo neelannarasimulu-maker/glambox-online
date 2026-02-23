@@ -44,8 +44,11 @@ export default function NewLoginPage() {
   const [requiresGoogle, setRequiresGoogle] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [googleClientId, setGoogleClientId] = useState<string | null>(null);
+  const [googleConfigLoaded, setGoogleConfigLoaded] = useState(false);
+  const [googleScriptReady, setGoogleScriptReady] = useState(false);
 
-  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+  const isGoogleAvailable = Boolean(googleClientId);
 
   const handleGoogleCredential = async (credential: string) => {
     setError(null);
@@ -84,8 +87,31 @@ export default function NewLoginPage() {
   };
 
   useEffect(() => {
+    const loadGoogleConfig = async () => {
+      try {
+        const response = await fetch("/api/auth/google/config");
+        const result = (await response.json()) as { enabled: boolean; clientId?: string };
+        if (result.enabled && result.clientId) {
+          setGoogleClientId(result.clientId);
+        } else {
+          setGoogleClientId(null);
+        }
+      } catch {
+        setGoogleClientId(null);
+      } finally {
+        setGoogleConfigLoaded(true);
+      }
+    };
+
+    void loadGoogleConfig();
+  }, []);
+
+  useEffect(() => {
+    if (!googleScriptReady) {
+      return;
+    }
     renderGoogleButton();
-  }, [googleClientId]);
+  }, [googleClientId, googleScriptReady]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -103,7 +129,13 @@ export default function NewLoginPage() {
         loginError.provider === "google"
       ) {
         setRequiresGoogle(true);
-        setError("This email is linked to Google. Continue securely with Google below.");
+        if (isGoogleAvailable) {
+          setError("This email is linked to Google. Continue securely with Google below.");
+        } else {
+          setError(
+            "This email is linked to Google, but Google sign-in is currently unavailable. Contact support or configure GOOGLE_CLIENT_ID."
+          );
+        }
       } else {
         setError(loginError.message || "Unable to sign in.");
       }
@@ -114,7 +146,11 @@ export default function NewLoginPage() {
 
   return (
     <Section className="bg-gradient-to-b from-[var(--muted)]/40 via-transparent to-transparent">
-      <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" onLoad={renderGoogleButton} />
+      <Script
+        src="https://accounts.google.com/gsi/client"
+        strategy="afterInteractive"
+        onLoad={() => setGoogleScriptReady(true)}
+      />
       <Container className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
         <Card className="overflow-hidden border-none bg-[var(--surface)] p-0 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
           <div className="bg-[var(--primary)] p-8 text-[var(--on-primary)]">
@@ -177,12 +213,12 @@ export default function NewLoginPage() {
           </div>
 
           <div className="min-h-11" ref={googleButtonRef} />
-          {!googleClientId ? (
+          {googleConfigLoaded && !isGoogleAvailable && !requiresGoogle ? (
             <p className="mt-2 text-xs text-amber-600">
-              Google sign-in is unavailable because NEXT_PUBLIC_GOOGLE_CLIENT_ID is not configured.
+              Google sign-in is unavailable. Set GOOGLE_CLIENT_ID (or NEXT_PUBLIC_GOOGLE_CLIENT_ID) in your .env file.
             </p>
           ) : null}
-          {requiresGoogle ? (
+          {requiresGoogle && isGoogleAvailable ? (
             <p className="mt-2 text-xs text-[var(--muted-foreground)]">
               For your security, this account can only be accessed using Google verification.
             </p>

@@ -8,9 +8,12 @@ export type GoogleIdentity = {
 let client: OAuth2Client | null = null;
 
 function getClientId() {
-  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientId =
+    process.env.GOOGLE_CLIENT_ID ?? process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
   if (!clientId) {
-    throw new Error("Google sign-in is not configured. Missing GOOGLE_CLIENT_ID.");
+    throw new Error(
+      "Google sign-in is not configured. Missing GOOGLE_CLIENT_ID (or NEXT_PUBLIC_GOOGLE_CLIENT_ID)."
+    );
   }
   return clientId;
 }

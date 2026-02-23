@@ -31,7 +31,6 @@ Create an OAuth 2.0 Client ID in Google Cloud Console and set:
 
 ```bash
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 ```
 
 Then open:
