@@ -4,6 +4,7 @@ import Link from "next/link";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { ShieldCheck, Mail, Lock, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
@@ -81,8 +82,8 @@ export default function NewLoginPage() {
       theme: "outline",
       size: "large",
       text: "continue_with",
-      shape: "rectangular",
-      width: 320
+      shape: "pill",
+      width: 360
     });
   };
 
@@ -124,10 +125,7 @@ export default function NewLoginPage() {
       router.push(user.onboardingCompleted ? "/dashboard" : "/onboarding");
     } catch (err) {
       const loginError = err as Error & { code?: string; provider?: string };
-      if (
-        loginError.code === "ACCOUNT_PROVIDER_REQUIRED" &&
-        loginError.provider === "google"
-      ) {
+      if (loginError.code === "ACCOUNT_PROVIDER_REQUIRED" && loginError.provider === "google") {
         setRequiresGoogle(true);
         if (isGoogleAvailable) {
           setError("This email is linked to Google. Continue securely with Google below.");
@@ -145,70 +143,73 @@ export default function NewLoginPage() {
   };
 
   return (
-    <Section className="bg-gradient-to-b from-[var(--muted)]/40 via-transparent to-transparent">
+    <Section className="bg-[radial-gradient(circle_at_top_left,var(--muted)_0%,transparent_45%),linear-gradient(to_bottom,var(--muted)_0%,transparent_35%)]">
       <Script
         src="https://accounts.google.com/gsi/client"
         strategy="afterInteractive"
         onLoad={() => setGoogleScriptReady(true)}
       />
-      <Container className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-        <Card className="overflow-hidden border-none bg-[var(--surface)] p-0 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
-          <div className="bg-[var(--primary)] p-8 text-[var(--on-primary)]">
-            <p className="text-xs uppercase tracking-[0.2em] opacity-80">Glambox Member Access</p>
-            <h1 className="mt-3 text-4xl font-semibold leading-tight">Sign in, then continue where you left off.</h1>
-            <p className="mt-3 max-w-xl text-sm opacity-90">
-              Faster login, safer profile prompts, and contextual onboarding when needed.
-            </p>
-          </div>
-          <div className="grid gap-4 p-8 text-sm text-[var(--muted-foreground)] md:grid-cols-3">
-            <p className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4">
-              1 minute sign-in with autofill-ready fields.
-            </p>
-            <p className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4">
-              Profile prompts only when they unlock a service.
-            </p>
-            <p className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4">
-              Medical and preference details remain editable anytime.
-            </p>
+      <Container className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+        <Card className="border-none bg-gradient-to-br from-[var(--primary)] via-[var(--primary)] to-[#431f54] p-8 text-[var(--on-primary)] shadow-[0_24px_70px_rgba(30,10,40,0.45)]">
+          <p className="text-xs uppercase tracking-[0.22em] opacity-80">Glambox Secure Access</p>
+          <h1 className="mt-4 text-4xl font-semibold leading-tight">Sign in with confidence.</h1>
+          <p className="mt-4 max-w-xl text-sm opacity-90">
+            We support secure email/password authentication and verified Google OAuth with server-side token checks.
+          </p>
+
+          <div className="mt-8 grid gap-3">
+            <div className="flex items-start gap-3 rounded-2xl bg-white/10 p-4">
+              <ShieldCheck className="mt-0.5 h-5 w-5" />
+              <p className="text-sm">Server-issued sessions with HttpOnly cookies and revocable tokens.</p>
+            </div>
+            <div className="flex items-start gap-3 rounded-2xl bg-white/10 p-4">
+              <Sparkles className="mt-0.5 h-5 w-5" />
+              <p className="text-sm">Google identity tokens are validated before login is accepted.</p>
+            </div>
           </div>
         </Card>
 
-        <Card className="p-6">
-          <h2 className="text-2xl font-semibold text-[var(--fg)]">Email sign in</h2>
-          <p className="mt-1 text-sm text-[var(--muted-foreground)]">
-            Use the account you created at checkout or registration.
-          </p>
-          <form onSubmit={handleSubmit} className="mt-5 grid gap-3">
-            <input
-              type="email"
-              autoComplete="email"
-              inputMode="email"
-              placeholder="Email address"
-              value={email}
-              onChange={(event) => {
-                setEmail(event.target.value);
-                setRequiresGoogle(false);
-              }}
-              className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm"
-              required
-            />
-            <input
-              type="password"
-              autoComplete="current-password"
-              placeholder="Password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm"
-              required
-            />
+        <Card className="border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[0_14px_45px_rgba(0,0,0,0.08)]">
+          <h2 className="text-2xl font-semibold text-[var(--fg)]">Welcome back</h2>
+          <p className="mt-1 text-sm text-[var(--muted-foreground)]">Sign in with your email and password or continue with Google.</p>
+
+          <form onSubmit={handleSubmit} className="mt-6 grid gap-3">
+            <label className="relative">
+              <Mail className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-[var(--muted-foreground)]" />
+              <input
+                type="email"
+                autoComplete="email"
+                inputMode="email"
+                placeholder="Email address"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                  setRequiresGoogle(false);
+                }}
+                className="h-11 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-10 text-sm"
+                required
+              />
+            </label>
+            <label className="relative">
+              <Lock className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-[var(--muted-foreground)]" />
+              <input
+                type="password"
+                autoComplete="current-password"
+                placeholder="Password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="h-11 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-10 text-sm"
+                required
+              />
+            </label>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Sign in"}
+              {isLoading ? "Signing in..." : "Sign in securely"}
             </Button>
           </form>
 
-          <div className="my-4 flex items-center gap-3 text-xs text-[var(--muted-foreground)]">
+          <div className="my-5 flex items-center gap-3 text-xs text-[var(--muted-foreground)]">
             <span className="h-px flex-1 bg-[var(--border)]" />
-            <span>or</span>
+            <span>OR CONTINUE WITH</span>
             <span className="h-px flex-1 bg-[var(--border)]" />
           </div>
 
@@ -220,7 +221,7 @@ export default function NewLoginPage() {
           ) : null}
           {requiresGoogle && isGoogleAvailable ? (
             <p className="mt-2 text-xs text-[var(--muted-foreground)]">
-              For your security, this account can only be accessed using Google verification.
+              For security, this account is restricted to Google OAuth sign-in.
             </p>
           ) : null}
 

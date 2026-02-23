@@ -55,11 +55,10 @@ type AuthState = {
   register: (payload: RegisterPayload) => Promise<SessionUser>;
   loginWithGoogle: (idToken: string) => Promise<SessionUser>;
   updateProfile: (payload: ProfilePayload) => Promise<SessionUser>;
-  logout: () => void;
+  logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthState | null>(null);
-const AUTH_KEY = "glambox_auth_v2";
 
 async function requestAuth<T>(url: string, payload: Record<string, unknown>) {
   const response = await fetch(url, {
@@ -90,61 +89,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SessionUser | undefined>();
   const [authReady, setAuthReady] = useState(false);
 
-  const normalizeStoredUser = (storedUser: SessionUser): SessionUser => ({
-    ...storedUser,
-    onboardingCompleted: Boolean(storedUser.onboardingCompleted)
-  });
-
   useEffect(() => {
-    const stored = window.localStorage.getItem(AUTH_KEY);
-    if (!stored) {
-      setAuthReady(true);
-      return;
-    }
-
-    try {
-      const parsed = normalizeStoredUser(JSON.parse(stored) as SessionUser);
-      setUser(parsed);
-
-      fetch(`/api/auth/profile?id=${encodeURIComponent(parsed.id)}`)
-        .then((response) => response.json())
-        .then((result: { user?: SessionUser }) => {
-          if (!result.user) {
-            return;
-          }
+    fetch("/api/auth/session")
+      .then((response) => response.json())
+      .then((result: { user?: SessionUser | null }) => {
+        if (result.user) {
           setUser(result.user);
-          window.localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
-        })
-        .catch(() => {
-          // Keep local session fallback if profile refresh fails.
-        })
-        .finally(() => {
-          setAuthReady(true);
-        });
-    } catch {
-      window.localStorage.removeItem(AUTH_KEY);
-      setAuthReady(true);
-    }
+        }
+      })
+      .finally(() => {
+        setAuthReady(true);
+      });
   }, []);
 
   const login = async (email: string, password: string) => {
     const result = await requestAuth<{ user: SessionUser }>("/api/auth/login", { email, password });
     setUser(result.user);
-    window.localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
     return result.user;
   };
 
   const register = async (payload: RegisterPayload) => {
     const result = await requestAuth<{ user: SessionUser }>("/api/auth/register", payload);
     setUser(result.user);
-    window.localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
     return result.user;
   };
 
   const loginWithGoogle = async (idToken: string) => {
     const result = await requestAuth<{ user: SessionUser }>("/api/auth/google", { idToken });
     setUser(result.user);
-    window.localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
     return result.user;
   };
 
@@ -161,13 +133,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     setUser(result.user);
-    window.localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
     return result.user;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
     setUser(undefined);
-    window.localStorage.removeItem(AUTH_KEY);
   };
 
   const value = useMemo(

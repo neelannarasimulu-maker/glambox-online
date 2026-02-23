@@ -4,6 +4,7 @@ import { get, run } from "@/lib/db";
 import { toSessionUser, type UserRow } from "@/lib/auth";
 import { verifyGoogleIdToken } from "@/lib/googleAuth";
 import { enforceRateLimit } from "@/lib/security";
+import { applySessionCookie, createSession, recordLoginEvent } from "@/lib/authSession";
 
 const GOOGLE_WINDOW_MS = 10 * 60 * 1000;
 const MAX_GOOGLE_ATTEMPTS = 20;
@@ -54,7 +55,16 @@ export async function POST(request: Request) {
     }
 
     const user = await get<UserRow>("SELECT * FROM users WHERE email = ?", [normalizedEmail]);
-    return NextResponse.json({ user: user ? toSessionUser(user) : null });
+    if (!user) {
+      return NextResponse.json({ error: "Unable to complete Google sign-in." }, { status: 500 });
+    }
+
+    const session = await createSession(user.id, "google");
+    await recordLoginEvent(user.id, "google", request);
+
+    const response = NextResponse.json({ user: toSessionUser(user) });
+    applySessionCookie(response, session.token, session.expiresAt);
+    return response;
   } catch (error) {
     if (
       error instanceof Error &&

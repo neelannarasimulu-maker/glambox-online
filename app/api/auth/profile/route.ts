@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
 import { get, run } from "@/lib/db";
 import { toSessionUser, type UserRow } from "@/lib/auth";
+import { getAuthenticatedUserId } from "@/lib/authSession";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
+export async function GET() {
+  const userId = await getAuthenticatedUserId();
 
-  if (!id) {
-    return NextResponse.json({ error: "User ID is required." }, { status: 400 });
+  if (!userId) {
+    return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
   }
 
-  const user = await get<UserRow>("SELECT * FROM users WHERE id = ?", [id]);
+  const user = await get<UserRow>("SELECT * FROM users WHERE id = ?", [userId]);
   if (!user) {
     return NextResponse.json({ error: "User not found." }, { status: 404 });
   }
@@ -54,11 +54,16 @@ export async function PUT(request: Request) {
     onboardingCompleted?: boolean;
   };
 
-  if (!id) {
-    return NextResponse.json({ error: "User ID is required." }, { status: 400 });
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
+    return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
   }
 
-  const existingUser = await get<UserRow>("SELECT * FROM users WHERE id = ?", [id]);
+  if (id && id !== userId) {
+    return NextResponse.json({ error: "You can only edit your own profile." }, { status: 403 });
+  }
+
+  const existingUser = await get<UserRow>("SELECT * FROM users WHERE id = ?", [userId]);
   if (!existingUser) {
     return NextResponse.json({ error: "User not found." }, { status: 404 });
   }
@@ -93,10 +98,10 @@ export async function PUT(request: Request) {
           ? 1
           : 0,
       new Date().toISOString(),
-      id
+      userId
     ]
   );
 
-  const user = await get<UserRow>("SELECT * FROM users WHERE id = ?", [id]);
+  const user = await get<UserRow>("SELECT * FROM users WHERE id = ?", [userId]);
   return NextResponse.json({ user: user ? toSessionUser(user) : null });
 }
