@@ -1,7 +1,9 @@
 import type { CSSProperties } from "react";
 import type { PopupConfig } from "./schemas";
 
-export function themeToVars(theme: PopupConfig["theme"]): CSSProperties {
+type CSSVarProperties = CSSProperties & Record<`--${string}`, string>;
+
+export function themeToVars(theme: PopupConfig["theme"]): CSSVarProperties {
   return {
     "--primary": theme.primary,
     "--secondary": theme.secondary,

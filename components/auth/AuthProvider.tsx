@@ -20,26 +20,41 @@ type RegisterPayload = {
   city?: string;
   country?: string;
   bio?: string;
+  preferences?: string;
+  dislikes?: string;
+  medicalInfo?: string;
+  hairPreferences?: string;
+  nailPreferences?: string;
+  foodPreferences?: string;
+  onboardingCompleted?: boolean;
 };
 
 type ProfilePayload = {
   id: string;
-  fullName: string;
+  fullName?: string;
   phone?: string;
   dateOfBirth?: string;
   address?: string;
   city?: string;
   country?: string;
   bio?: string;
+  preferences?: string;
+  dislikes?: string;
+  medicalInfo?: string;
+  hairPreferences?: string;
+  nailPreferences?: string;
+  foodPreferences?: string;
+  onboardingCompleted?: boolean;
 };
 
 type AuthState = {
+  authReady: boolean;
   isAuthenticated: boolean;
   user?: SessionUser;
-  login: (email: string, password: string) => Promise<void>;
-  register: (payload: RegisterPayload) => Promise<void>;
-  loginWithGoogle: (email: string, fullName?: string) => Promise<void>;
-  updateProfile: (payload: ProfilePayload) => Promise<void>;
+  login: (email: string, password: string) => Promise<SessionUser>;
+  register: (payload: RegisterPayload) => Promise<SessionUser>;
+  loginWithGoogle: (email: string, fullName?: string) => Promise<SessionUser>;
+  updateProfile: (payload: ProfilePayload) => Promise<SessionUser>;
   logout: () => void;
 };
 
@@ -53,9 +68,19 @@ async function requestAuth<T>(url: string, payload: Record<string, unknown>) {
     body: JSON.stringify(payload)
   });
 
-  const result = (await response.json()) as T & { error?: string };
+  const result = (await response.json()) as T & {
+    error?: string;
+    code?: string;
+    provider?: string;
+  };
   if (!response.ok) {
-    throw new Error(result.error || "Authentication request failed.");
+    const error = new Error(result.error || "Authentication request failed.") as Error & {
+      code?: string;
+      provider?: string;
+    };
+    error.code = result.code;
+    error.provider = result.provider;
+    throw error;
   }
 
   return result;
@@ -63,11 +88,42 @@ async function requestAuth<T>(url: string, payload: Record<string, unknown>) {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SessionUser | undefined>();
+  const [authReady, setAuthReady] = useState(false);
+
+  const normalizeStoredUser = (storedUser: SessionUser): SessionUser => ({
+    ...storedUser,
+    onboardingCompleted: Boolean(storedUser.onboardingCompleted)
+  });
 
   useEffect(() => {
     const stored = window.localStorage.getItem(AUTH_KEY);
-    if (stored) {
-      setUser(JSON.parse(stored) as SessionUser);
+    if (!stored) {
+      setAuthReady(true);
+      return;
+    }
+
+    try {
+      const parsed = normalizeStoredUser(JSON.parse(stored) as SessionUser);
+      setUser(parsed);
+
+      fetch(`/api/auth/profile?id=${encodeURIComponent(parsed.id)}`)
+        .then((response) => response.json())
+        .then((result: { user?: SessionUser }) => {
+          if (!result.user) {
+            return;
+          }
+          setUser(result.user);
+          window.localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
+        })
+        .catch(() => {
+          // Keep local session fallback if profile refresh fails.
+        })
+        .finally(() => {
+          setAuthReady(true);
+        });
+    } catch {
+      window.localStorage.removeItem(AUTH_KEY);
+      setAuthReady(true);
     }
   }, []);
 
@@ -75,18 +131,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const result = await requestAuth<{ user: SessionUser }>("/api/auth/login", { email, password });
     setUser(result.user);
     window.localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
+    return result.user;
   };
 
   const register = async (payload: RegisterPayload) => {
     const result = await requestAuth<{ user: SessionUser }>("/api/auth/register", payload);
     setUser(result.user);
     window.localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
+    return result.user;
   };
 
   const loginWithGoogle = async (email: string, fullName?: string) => {
     const result = await requestAuth<{ user: SessionUser }>("/api/auth/google", { email, fullName });
     setUser(result.user);
     window.localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
+    return result.user;
   };
 
   const updateProfile = async (payload: ProfilePayload) => {
@@ -103,6 +162,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setUser(result.user);
     window.localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
+    return result.user;
   };
 
   const logout = () => {
@@ -112,6 +172,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({
+      authReady,
       isAuthenticated: Boolean(user),
       user,
       login,
@@ -120,7 +181,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       updateProfile,
       logout
     }),
-    [user]
+    [authReady, user]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -38,15 +38,19 @@ export default function BookPage() {
                 key={card.popupKey}
                 data-theme={card.popupKey}
                 accent
-                className="overflow-hidden border-[var(--primary)] bg-[var(--primary)] text-[var(--on-primary)]"
+                className="overflow-hidden border-[var(--primary)] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--primary)_88%,black)_0%,color-mix(in_srgb,var(--primary)_96%,black)_100%)] text-[var(--on-primary)]"
               >
                 <img src={card.image.src} alt={card.image.alt} className="h-48 w-full object-cover" />
                 <CardHeader>
-                  <CardTitle className="text-[var(--on-primary)]">{card.title}</CardTitle>
+                  <CardTitle className="text-2xl text-[var(--on-primary)]">{card.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-4">
-                  <p className="text-sm text-[var(--on-primary)] opacity-90">{card.body}</p>
-                  <Button asChild variant="outline" className="border-white text-white hover:bg-white/10">
+                  <p className="text-base leading-7 text-[var(--on-primary)] opacity-95">{card.body}</p>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="border-[var(--on-primary)] bg-[var(--on-primary)] text-[var(--primary)] hover:bg-white"
+                  >
                     <Link href={card.href}>{bookingPage.popupLinksCtaLabel}</Link>
                   </Button>
                 </CardContent>

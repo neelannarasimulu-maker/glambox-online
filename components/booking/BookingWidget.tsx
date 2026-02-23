@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 type BookingLabels = {
   headline: string;
@@ -33,6 +35,8 @@ type ConsultantOption = {
 };
 
 type BookingWidgetProps = {
+  popupKey: string;
+  popupName: string;
   labels: BookingLabels;
   services: ServiceOption[];
   consultants: ConsultantOption[];
@@ -41,12 +45,16 @@ type BookingWidgetProps = {
 };
 
 export function BookingWidget({
+  popupKey,
+  popupName,
   labels,
   services,
   consultants,
   fixedServiceId,
   fixedConsultantId
 }: BookingWidgetProps) {
+  const router = useRouter();
+  const { authReady, isAuthenticated, user } = useAuth();
   const defaultServiceId = fixedServiceId ?? services[0]?.id ?? "";
   const defaultConsultantId = fixedConsultantId ?? consultants[0]?.id ?? "";
 
@@ -54,6 +62,7 @@ export function BookingWidget({
   const [consultantId, setConsultantId] = useState(defaultConsultantId);
   const [date, setDate] = useState("");
   const [time, setTime] = useState(labels.timeOptions[0] ?? "");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [error, setError] = useState("");
 
@@ -74,12 +83,54 @@ export function BookingWidget({
   const canConfirm = Boolean(serviceId && consultantId && date && time);
   const disableConfirm = services.length === 0 || consultants.length === 0;
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    if (!authReady) {
+      return;
+    }
+    if (!isAuthenticated || !user) {
+      setError("Please sign in first to save your booking.");
+      router.push("/auth/login");
+      return;
+    }
     if (!canConfirm) {
       setError(labels.missingSelection);
       return;
     }
-    setConfirmed(true);
+
+    if (!selectedService || !selectedConsultant) {
+      setError(labels.missingSelection);
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          popupKey,
+          popupName,
+          serviceId: selectedService.id,
+          serviceTitle: selectedService.title,
+          consultantId: selectedConsultant.id,
+          consultantName: selectedConsultant.name,
+          bookingDate: date,
+          bookingTime: time,
+          source: "widget"
+        })
+      });
+      const result = (await response.json()) as { error?: string };
+      if (!response.ok) {
+        throw new Error(result.error || "Could not create booking.");
+      }
+      setConfirmed(true);
+      setError("");
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : "Could not create booking.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -170,8 +221,8 @@ export function BookingWidget({
         </div>
         <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="text-sm text-[var(--pop)]">{error}</div>
-          <Button onClick={handleConfirm} disabled={disableConfirm}>
-            {labels.confirmLabel}
+          <Button onClick={handleConfirm} disabled={disableConfirm || isSubmitting}>
+            {isSubmitting ? "Saving..." : labels.confirmLabel}
           </Button>
         </div>
         {confirmed ? (

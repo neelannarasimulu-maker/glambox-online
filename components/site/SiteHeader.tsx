@@ -21,7 +21,7 @@ export function SiteHeader({ config }: SiteHeaderProps) {
   const exploreItem = config.nav.items.find((item) => item.type === "dropdown");
   const linkItems = config.nav.items.filter((item) => item.type === "link");
   const { itemCount } = useCart();
-  const { isAuthenticated, logout } = useAuth();
+  const { authReady, isAuthenticated, logout } = useAuth();
 
   const clearCloseTimeout = () => {
     if (closeTimeout.current) {
@@ -36,7 +36,7 @@ export function SiteHeader({ config }: SiteHeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-black bg-black backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--card)_90%,white)]/95 backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center gap-3">
           <img
@@ -45,7 +45,7 @@ export function SiteHeader({ config }: SiteHeaderProps) {
             className="h-12 w-auto"
           />
           <div className="flex flex-col">
-            <span className="text-xs text-white/70">{config.brand.tagline}</span>
+            <span className="text-xs text-[var(--muted-foreground)]">{config.brand.tagline}</span>
           </div>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
@@ -54,8 +54,8 @@ export function SiteHeader({ config }: SiteHeaderProps) {
               <DropdownMenu open={open} onOpenChange={setOpen}>
                 <DropdownMenuTrigger
                   className={cn(
-                    "text-sm font-semibold text-white/80",
-                    open && "text-white"
+                    "text-sm font-semibold text-[var(--muted-foreground)] hover:text-[var(--fg)]",
+                    open && "text-[var(--fg)]"
                   )}
                   onClick={() => setOpen((prev) => !prev)}
                   onPointerEnter={() => {
@@ -92,29 +92,29 @@ export function SiteHeader({ config }: SiteHeaderProps) {
             <Link
               key={item.id}
               href={item.href}
-              className="text-sm font-semibold text-white/80 hover:text-white"
+              className="text-sm font-semibold text-[var(--muted-foreground)] hover:text-[var(--fg)]"
             >
               {item.label}
             </Link>
           ))}
           <Link
-            href={isAuthenticated ? "/dashboard" : "/auth/login"}
-            className="text-sm font-semibold text-white/80 hover:text-white"
+            href={authReady && isAuthenticated ? "/dashboard" : "/auth/login"}
+            className="text-sm font-semibold text-[var(--muted-foreground)] hover:text-[var(--fg)]"
           >
-            {isAuthenticated ? "My Dashboard" : "Login"}
+            {authReady && isAuthenticated ? "My Dashboard" : "Login"}
           </Link>
-          {isAuthenticated ? (
+          {authReady && isAuthenticated ? (
             <button
               type="button"
               onClick={logout}
-              className="text-sm font-semibold text-white/70 hover:text-white"
+              className="text-sm font-semibold text-[var(--muted-foreground)] hover:text-[var(--fg)]"
             >
               Log out
             </button>
           ) : null}
-          <Link href="/cart" className="relative text-sm font-semibold text-white/80 hover:text-white">
+          <Link href="/cart" className="relative text-sm font-semibold text-[var(--muted-foreground)] hover:text-[var(--fg)]">
             Cart
-            <span className="ml-2 inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-black">
+            <span className="ml-2 inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-[var(--primary)] px-2 py-0.5 text-xs font-semibold text-[var(--on-primary)]">
               {itemCount}
             </span>
           </Link>
@@ -122,7 +122,7 @@ export function SiteHeader({ config }: SiteHeaderProps) {
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" aria-label="Open menu" className="border-white/40 text-white hover:bg-white/10">
+              <Button variant="outline" aria-label="Open menu">
                 <Menu size={18} />
               </Button>
             </SheetTrigger>
@@ -158,12 +158,12 @@ export function SiteHeader({ config }: SiteHeaderProps) {
                     </Link>
                   ))}
                   <Link
-                    href={isAuthenticated ? "/dashboard" : "/auth/login"}
+                    href={authReady && isAuthenticated ? "/dashboard" : "/auth/login"}
                     className="text-sm font-semibold text-[var(--fg)]"
                   >
-                    {isAuthenticated ? "My Dashboard" : "Login"}
+                    {authReady && isAuthenticated ? "My Dashboard" : "Login"}
                   </Link>
-                  {isAuthenticated ? (
+                  {authReady && isAuthenticated ? (
                     <button
                       type="button"
                       onClick={logout}

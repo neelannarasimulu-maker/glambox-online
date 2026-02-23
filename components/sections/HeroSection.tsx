@@ -21,15 +21,19 @@ export function HeroSection({ hero }: HeroSectionProps) {
             <Badge variant="pop" className="mb-5">
               {hero.badge}
             </Badge>
-            <h1 className="text-5xl font-semibold md:text-6xl">{hero.headline}</h1>
-            <p className="mt-4 text-base text-[var(--on-primary)] opacity-90 md:text-lg">
+            <h1 className="text-5xl font-semibold tracking-[-0.02em] md:text-6xl">{hero.headline}</h1>
+            <p className="mt-4 text-base leading-7 text-[var(--on-primary)] opacity-90 md:text-lg">
               {hero.subheadline}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild>
                 <a href={hero.primaryCta.href}>{hero.primaryCta.label}</a>
               </Button>
-              <Button asChild variant="outline">
+              <Button
+                asChild
+                variant="outline"
+                className="border-white/60 bg-white/10 text-white hover:bg-white/20"
+              >
                 <a href={hero.secondaryCta.href}>{hero.secondaryCta.label}</a>
               </Button>
             </div>

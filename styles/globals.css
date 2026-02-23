@@ -22,8 +22,11 @@
   --on-primary: #fff6ef; /* text on primary */
   --on-secondary: #fff7ef; /* text on secondary */
   --on-accent: #2b1d16; /* text on accent */
-  --shadow: 0 16px 40px rgba(43, 29, 22, 0.18);
+  --shadow: 0 18px 48px rgba(43, 29, 22, 0.12);
+  --shadow-soft: 0 10px 24px rgba(43, 29, 22, 0.08);
+  --shadow-focus: 0 0 0 3px color-mix(in srgb, var(--accent) 38%, transparent);
   --radius: 24px;
+  --radius-sm: 16px;
   --hero-overlay: linear-gradient(
     90deg,
     rgba(43, 29, 22, 0.78) 0%,
@@ -37,44 +40,69 @@
 
 /* Accent themes per microsite */
 [data-theme="hair"] {
-  --primary: #b26552; /* terracotta rose */
-  --accent: #e79fb1; /* rose blush */
-  --secondary: #9a6a55; /* warm copper */
-  --pop: #f3a07c; /* peach */
-  --border: #b26552; /* tie borders to theme */
-  --heading: #b26552;
+  --primary: #7c3aed; /* electric violet */
+  --accent: #ec4899; /* neon magenta */
+  --secondary: #22d3ee; /* charged cyan */
+  --pop: #f97316; /* voltage orange */
+  --bg: #f5f3ff;
+  --fg: #1f1147;
+  --muted: #ede9fe;
+  --muted-foreground: #5b4b9a;
+  --card: #ffffff;
+  --border: #7c3aed;
+  --heading: #7c3aed;
 }
 
 [data-theme="nails"] {
-  --primary: #a35d7b; /* rose mauve */
-  --accent: #d7a3d1; /* soft orchid */
-  --secondary: #8f6a4f; /* mocha */
-  --pop: #f0b37e; /* honey */
-  --border: #a35d7b; /* tie borders to theme */
-  --heading: #a35d7b;
+  --primary: #db2777; /* hot pink */
+  --accent: #f472b6; /* electric rose */
+  --secondary: #06b6d4; /* bright cyan */
+  --pop: #facc15; /* neon yellow */
+  --bg: #fff1f7;
+  --fg: #3b0a2a;
+  --muted: #ffe4f1;
+  --muted-foreground: #9f3a71;
+  --card: #ffffff;
+  --border: #db2777;
+  --heading: #db2777;
 }
 
 [data-theme="wellness"] {
-  --primary: #7f9b7f; /* sage */
-  --accent: #a6c8b4; /* sage */
-  --secondary: #7e6a4d; /* earth */
-  --pop: #e8b37a; /* sun */
-  --border: #7f9b7f; /* tie borders to theme */
-  --heading: #7f9b7f;
+  --primary: #14b8a6; /* vivid teal */
+  --accent: #84cc16; /* electric lime */
+  --secondary: #38bdf8; /* laser blue */
+  --pop: #22d3ee; /* aqua flare */
+  --bg: #ecfeff;
+  --fg: #0f2540;
+  --muted: #cffafe;
+  --muted-foreground: #1e6b78;
+  --card: #f7feff;
+  --border: #14b8a6;
+  --heading: #14b8a6;
 }
 
 [data-theme="food"] {
-  --primary: #c46a3c; /* roasted terracotta */
-  --accent: #f1b080; /* apricot */
-  --secondary: #7f9b7f; /* herb */
-  --pop: #e8b37a; /* sun */
-  --border: #c46a3c;
-  --heading: #c46a3c;
+  --primary: #f97316; /* electric tangerine */
+  --accent: #fb7185; /* bright coral */
+  --secondary: #facc15; /* vivid amber */
+  --pop: #22d3ee; /* cyan spark */
+  --bg: #fff7ed;
+  --fg: #3b1f0f;
+  --muted: #ffedd5;
+  --muted-foreground: #a14d1f;
+  --card: #fffaf3;
+  --border: #f97316;
+  --heading: #f97316;
 }
 
 body {
   @apply bg-[var(--bg)] text-[var(--fg)] antialiased;
   font-family: var(--font-sans), system-ui, sans-serif;
+  line-height: 1.6;
+  background-image:
+    radial-gradient(circle at 8% -2%, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 36%),
+    radial-gradient(circle at 92% 0%, color-mix(in srgb, var(--primary) 11%, transparent) 0%, transparent 34%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 70%, transparent) 0%, var(--bg) 35%);
 }
 
 h1,
@@ -82,11 +110,31 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display), "Times New Roman", serif;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  text-wrap: balance;
 }
 
 main {
   @apply min-h-screen;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  transition: color 180ms ease;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, white);
+  color: var(--fg);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
 }
 
 img {

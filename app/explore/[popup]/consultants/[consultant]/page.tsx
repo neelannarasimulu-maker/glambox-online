@@ -98,6 +98,8 @@ export default function ConsultantDetailPage({
       )}
       <div className="mx-auto w-full max-w-5xl px-6">
         <BookingWidget
+          popupKey={popup.popupKey}
+          popupName={popup.name}
           labels={popup.pages.booking.widget}
           services={relatedServices.map((service) => ({
             id: service.id,

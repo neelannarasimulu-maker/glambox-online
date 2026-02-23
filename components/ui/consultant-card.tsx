@@ -38,8 +38,8 @@ export function ConsultantCard({
         </div>
       </div>
       <CardHeader className="gap-2">
-        <CardTitle className="text-xl text-[var(--fg)]">{name}</CardTitle>
-        <div className="text-sm text-[var(--muted-foreground)]">{bio}</div>
+        <CardTitle>{name}</CardTitle>
+        <div className="text-sm leading-6 text-[var(--muted-foreground)]">{bio}</div>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-wrap gap-2">
@@ -52,7 +52,7 @@ export function ConsultantCard({
   );
 
   return href ? (
-    <Link href={href} className="block transition hover:-translate-y-1">
+    <Link href={href} className="block">
       {card}
     </Link>
   ) : (

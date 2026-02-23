@@ -52,16 +52,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (stored) {
       const parsed: CartItem[] = JSON.parse(stored);
       const migrated = parsed.map((entry) => ({
-        itemKey: entry.itemKey ?? `${entry.popupKey}:${entry.productId}`,
-        ...entry
+        ...entry,
+        itemKey: entry.itemKey ?? `${entry.popupKey}:${entry.productId}`
       }));
       setItems(migrated);
     }
     if (storedOrder) {
       const parsedOrder: CartItem[] = JSON.parse(storedOrder);
       const migratedOrder = parsedOrder.map((entry) => ({
-        itemKey: entry.itemKey ?? `${entry.popupKey}:${entry.productId}`,
-        ...entry
+        ...entry,
+        itemKey: entry.itemKey ?? `${entry.popupKey}:${entry.productId}`
       }));
       setLastOrder(migratedOrder);
     }

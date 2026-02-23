@@ -3,14 +3,14 @@
     "name": "Glambox Kitchen",
     "tagline": "Custom light meals, crafted with care and flavour",
     "theme": {
-        "primary": "#c46a3c",
-        "secondary": "#7f9b7f",
-        "accent": "#f1b080",
-        "bg": "#fbf2e8",
-        "fg": "#2b1d16",
-        "muted": "#f1e2d2",
-        "card": "#fff7ef",
-        "border": "#c46a3c"
+        "primary": "#f97316",
+        "secondary": "#facc15",
+        "accent": "#fb7185",
+        "bg": "#fff7ed",
+        "fg": "#3b1f0f",
+        "muted": "#ffedd5",
+        "card": "#fffaf3",
+        "border": "#f97316"
     },
     "images": {
         "hero": { "src": "/food/food-hero.jpg", "alt": "Glambox Kitchen interior" },

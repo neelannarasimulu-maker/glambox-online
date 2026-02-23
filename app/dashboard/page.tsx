@@ -1,51 +1,102 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/components/auth/AuthProvider";
 import Link from "next/link";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { getPopupConfig } from "@/lib/content";
 import { getChatStatus } from "@/lib/chatStatus";
+import type { Booking } from "@/lib/bookings";
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { isAuthenticated, user } = useAuth();
+  const { authReady, isAuthenticated, user, updateProfile } = useAuth();
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [isLoadingBookings, setIsLoadingBookings] = useState(false);
+  const [bookingsError, setBookingsError] = useState<string | null>(null);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [profileMessage, setProfileMessage] = useState<string | null>(null);
+  const [profileError, setProfileError] = useState<string | null>(null);
+  const [profileForm, setProfileForm] = useState({
+    fullName: "",
+    phone: ""
+  });
+
   useEffect(() => {
+    if (!authReady) {
+      return;
+    }
     if (!isAuthenticated) {
       router.replace("/auth/login");
     }
-  }, [isAuthenticated, router]);
+  }, [authReady, isAuthenticated, router]);
 
-  if (!isAuthenticated) {
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    setProfileForm({
+      fullName: user.fullName ?? "",
+      phone: user.phone ?? ""
+    });
+  }, [user]);
+
+  useEffect(() => {
+    if (!authReady || !isAuthenticated || !user) {
+      return;
+    }
+
+    setIsLoadingBookings(true);
+    setBookingsError(null);
+    fetch(`/api/bookings?userId=${encodeURIComponent(user.id)}`)
+      .then(async (response) => {
+        const result = (await response.json()) as { bookings?: Booking[]; error?: string };
+        if (!response.ok) {
+          throw new Error(result.error || "Could not load bookings.");
+        }
+        setBookings(result.bookings ?? []);
+      })
+      .catch((error) => {
+        setBookingsError(error instanceof Error ? error.message : "Could not load bookings.");
+      })
+      .finally(() => {
+        setIsLoadingBookings(false);
+      });
+  }, [authReady, isAuthenticated, user]);
+
+  const handleProfileSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!user) {
+      return;
+    }
+
+    setIsSavingProfile(true);
+    setProfileMessage(null);
+    setProfileError(null);
+
+    try {
+      await updateProfile({ id: user.id, ...profileForm });
+      setProfileMessage("Identity details updated.");
+    } catch (error) {
+      setProfileError(error instanceof Error ? error.message : "Could not update profile.");
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
+
+  if (!authReady || !isAuthenticated) {
     return null;
   }
 
   const hair = getPopupConfig("hair");
   const nails = getPopupConfig("nails");
   const wellness = getPopupConfig("wellness");
-
-  const appointments = [
-    {
-      id: "appt-hair-1",
-      popup: hair.name,
-      service: hair.pages.services.services[0],
-      consultant: hair.pages.consultants.consultants.find((c) => c.id === "noah"),
-      date: "2026-02-20",
-      time: "14:00"
-    },
-    {
-      id: "appt-wellness-1",
-      popup: wellness.name,
-      service: wellness.pages.services.services.find((s) => s.id === "led-glow"),
-      consultant: wellness.pages.consultants.consultants.find((c) => c.id === "leila"),
-      date: "2026-02-27",
-      time: "10:30"
-    }
-  ].filter((item) => item.service && item.consultant);
 
   const purchases = [
     {
@@ -83,28 +134,53 @@ export default function DashboardPage() {
           <p className="mt-2 text-[var(--muted-foreground)]">
             Signed in as {user?.email ?? "member"}
           </p>
+          {!user?.onboardingCompleted ? (
+            <p className="mt-2 text-sm text-[var(--fg)]">
+              Contextual profile setup is incomplete.{" "}
+              <Link href="/onboarding" className="font-semibold underline">
+                Continue setup
+              </Link>
+            </p>
+          ) : null}
         </div>
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <Card className="p-6">
             <h2 className="text-2xl font-semibold text-[var(--fg)]">My appointments</h2>
             <p className="mt-2 text-sm text-[var(--muted-foreground)]">
-              Upcoming and recent appointments across Glambox popups.
+              Your actual bookings across Glambox popups.
             </p>
             <div className="mt-4 flex flex-col gap-3">
-              {appointments.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex flex-col gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm"
-                >
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant="pop">{item.popup}</Badge>
-                    <span className="text-[var(--fg)]">{item.service?.title}</span>
-                  </div>
-                  <div className="text-[var(--muted-foreground)]">
-                    {item.consultant?.name} · {item.date} · {item.time}
-                  </div>
+              {isLoadingBookings ? (
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--muted-foreground)]">
+                  Loading bookings...
                 </div>
-              ))}
+              ) : null}
+              {!isLoadingBookings && bookingsError ? (
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-red-500">
+                  {bookingsError}
+                </div>
+              ) : null}
+              {!isLoadingBookings && !bookingsError && bookings.length === 0 ? (
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--muted-foreground)]">
+                  No bookings yet. Book a service to see it here.
+                </div>
+              ) : null}
+              {!isLoadingBookings && !bookingsError
+                ? bookings.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex flex-col gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm"
+                    >
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Badge variant="pop">{item.popupName}</Badge>
+                        <span className="text-[var(--fg)]">{item.serviceTitle}</span>
+                      </div>
+                      <div className="text-[var(--muted-foreground)]">
+                        {item.consultantName} - {item.bookingDate} - {item.bookingTime}
+                      </div>
+                    </div>
+                  ))
+                : null}
             </div>
           </Card>
           <Card className="p-6">
@@ -120,7 +196,7 @@ export default function DashboardPage() {
                 >
                   <div>
                     <div className="text-[var(--fg)]">
-                      {item.product?.name} · {item.popup}
+                      {item.product?.name} - {item.popup}
                     </div>
                     <div className="text-[var(--muted-foreground)]">{item.date}</div>
                   </div>
@@ -159,7 +235,7 @@ export default function DashboardPage() {
                       <span className="text-[var(--muted-foreground)]">{popup.name}</span>
                     </div>
                     <div className="text-[var(--muted-foreground)]">
-                      {status.status === "available" ? "Available now" : "Unavailable"} ·{" "}
+                      {status.status === "available" ? "Available now" : "Unavailable"} -{" "}
                       {status.responseTime}
                     </div>
                     <Link
@@ -177,96 +253,79 @@ export default function DashboardPage() {
           </div>
         </Card>
         <Card className="p-6">
-          <h2 className="text-2xl font-semibold text-[var(--fg)]">My health profile</h2>
+          <h2 className="text-2xl font-semibold text-[var(--fg)]">Profile actions in context</h2>
           <p className="mt-2 text-sm text-[var(--muted-foreground)]">
-            Keep your preferences, sensitivities, and allergies up to date for safer, more
-            personalised care.
+            Update details only when needed for a service. Medical, hair, nails, and food preferences each have their own action.
           </p>
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            <label className="flex flex-col gap-2 text-sm text-[var(--muted-foreground)]">
-              Age
-              <input
-                defaultValue="34"
-                className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--fg)]"
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm text-[var(--muted-foreground)]">
-              Allergies (ingredients, materials, adhesives)
-              <input
-                defaultValue="Fragrance, latex"
-                className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--fg)]"
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm text-[var(--muted-foreground)]">
-              Sensitivities (skin/scalp/nail)
-              <input
-                defaultValue="Scalp sensitivity"
-                className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--fg)]"
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm text-[var(--muted-foreground)]">
-              Product preferences (scents, textures)
-              <input
-                defaultValue="Low fragrance, lightweight textures"
-                className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--fg)]"
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm text-[var(--muted-foreground)]">
-              Hair preferences (colour, cut, styling)
-              <input
-                defaultValue="Warm tones, low-maintenance styling"
-                className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--fg)]"
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm text-[var(--muted-foreground)]">
-              Nail preferences (shape, length, finish)
-              <input
-                defaultValue="Short almond, glossy finishes"
-                className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--fg)]"
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm text-[var(--muted-foreground)]">
-              Wellness goals (skin, recovery, calm)
-              <input
-                defaultValue="Hydration, glow, stress relief"
-                className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--fg)]"
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-sm text-[var(--muted-foreground)]">
-              Dislikes / avoid
-              <input
-                defaultValue="Heavy scents, overly hot tools"
-                className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--fg)]"
-              />
-            </label>
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
+            <Link href="/onboarding?section=medical" className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm font-semibold text-[var(--fg)]">
+              Update medical information
+            </Link>
+            <Link href="/onboarding?section=hair" className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm font-semibold text-[var(--fg)]">
+              Update hair preferences
+            </Link>
+            <Link href="/onboarding?section=nails" className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm font-semibold text-[var(--fg)]">
+              Update nail preferences
+            </Link>
+            <Link href="/onboarding?section=food" className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm font-semibold text-[var(--fg)]">
+              Update food preferences
+            </Link>
           </div>
-          <div className="mt-4 text-xs text-[var(--muted-foreground)]">
-            These are example values to illustrate the dashboard layout.
-          </div>
+          <form onSubmit={handleProfileSubmit} className="mt-6 grid gap-4 md:grid-cols-2">
+            <input
+              type="text"
+              placeholder="Full name"
+              value={profileForm.fullName}
+              onChange={(event) =>
+                setProfileForm((previous) => ({ ...previous, fullName: event.target.value }))
+              }
+              className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--fg)]"
+              required
+            />
+            <input
+              type="tel"
+              placeholder="Phone"
+              value={profileForm.phone}
+              onChange={(event) =>
+                setProfileForm((previous) => ({ ...previous, phone: event.target.value }))
+              }
+              className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--fg)]"
+            />
+            <div className="flex flex-wrap items-center gap-3 md:col-span-2">
+              <Button type="submit" disabled={isSavingProfile}>
+                {isSavingProfile ? "Saving..." : "Save identity"}
+              </Button>
+              <Link href="/onboarding" className="text-sm font-semibold text-[var(--fg)]">
+                Open full contextual profile
+              </Link>
+            </div>
+          </form>
+          {profileMessage ? <p className="mt-3 text-sm text-green-600">{profileMessage}</p> : null}
+          {profileError ? <p className="mt-3 text-sm text-red-500">{profileError}</p> : null}
         </Card>
         <div className="grid gap-6 md:grid-cols-3">
           <Card className="p-6">
             <h2 className="text-lg font-semibold text-[var(--fg)]">Recommended services</h2>
             <div className="mt-3 flex flex-col gap-2 text-sm text-[var(--muted-foreground)]">
-              <span>Signature Cut · Hair Atelier</span>
-              <span>Gel Artist Set · Nail Studio</span>
-              <span>Hydra Facial · Wellness Lounge</span>
+              <span>Signature Cut - Hair Atelier</span>
+              <span>Gel Artist Set - Nail Studio</span>
+              <span>Hydra Facial - Wellness Lounge</span>
             </div>
           </Card>
           <Card className="p-6">
             <h2 className="text-lg font-semibold text-[var(--fg)]">Recommended consultants</h2>
             <div className="mt-3 flex flex-col gap-2 text-sm text-[var(--muted-foreground)]">
-              <span>Noah Rivera · Cutting Specialist</span>
-              <span>Mira Lopez · Nail Artist</span>
-              <span>Leila Hart · Wellness Guide</span>
+              <span>Noah Rivera - Cutting Specialist</span>
+              <span>Mira Lopez - Nail Artist</span>
+              <span>Leila Hart - Wellness Guide</span>
             </div>
           </Card>
           <Card className="p-6">
             <h2 className="text-lg font-semibold text-[var(--fg)]">Recommended products</h2>
             <div className="mt-3 flex flex-col gap-2 text-sm text-[var(--muted-foreground)]">
-              <span>Luxe Shine Oil · Hair Atelier</span>
-              <span>Glass File Set · Nail Studio</span>
-              <span>Calm Balm · Wellness Lounge</span>
+              <span>Luxe Shine Oil - Hair Atelier</span>
+              <span>Glass File Set - Nail Studio</span>
+              <span>Calm Balm - Wellness Lounge</span>
             </div>
           </Card>
         </div>

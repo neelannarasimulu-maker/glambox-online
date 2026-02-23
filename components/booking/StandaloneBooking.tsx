@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 type BookingLabels = {
   bookingHeadline: string;
@@ -54,12 +56,15 @@ type StandaloneBookingProps = {
 };
 
 export function StandaloneBooking({ labels, popups }: StandaloneBookingProps) {
+  const router = useRouter();
+  const { authReady, isAuthenticated, user } = useAuth();
   const defaultPopupKey = popups[0]?.popupKey ?? "";
   const [popupKey, setPopupKey] = useState(defaultPopupKey);
   const [serviceId, setServiceId] = useState("");
   const [consultantId, setConsultantId] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState(labels.timeOptions[0] ?? "");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [error, setError] = useState("");
 
@@ -146,12 +151,54 @@ export function StandaloneBooking({ labels, popups }: StandaloneBookingProps) {
   const canConfirm = Boolean(popupKey && serviceId && consultantId && date && time);
   const disableConfirm = services.length === 0 || availableConsultants.length === 0;
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    if (!authReady) {
+      return;
+    }
+    if (!isAuthenticated || !user) {
+      setError("Please sign in first to save your booking.");
+      router.push("/auth/login");
+      return;
+    }
     if (!canConfirm) {
       setError(labels.missingSelection);
       return;
     }
-    setConfirmed(true);
+
+    if (!selectedPopup || !selectedService || !selectedConsultant) {
+      setError(labels.missingSelection);
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          popupKey: selectedPopup.popupKey,
+          popupName: selectedPopup.name,
+          serviceId: selectedService.id,
+          serviceTitle: selectedService.title,
+          consultantId: selectedConsultant.id,
+          consultantName: selectedConsultant.name,
+          bookingDate: date,
+          bookingTime: time,
+          source: "standalone"
+        })
+      });
+      const result = (await response.json()) as { error?: string };
+      if (!response.ok) {
+        throw new Error(result.error || "Could not create booking.");
+      }
+      setConfirmed(true);
+      setError("");
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : "Could not create booking.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -258,8 +305,8 @@ export function StandaloneBooking({ labels, popups }: StandaloneBookingProps) {
           </div>
           <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="text-sm text-[var(--pop)]">{error}</div>
-            <Button onClick={handleConfirm} disabled={disableConfirm}>
-              {labels.confirmLabel}
+            <Button onClick={handleConfirm} disabled={disableConfirm || isSubmitting}>
+              {isSubmitting ? "Saving..." : labels.confirmLabel}
             </Button>
           </div>
           {confirmed ? (

@@ -53,25 +53,26 @@ export function SectionGrid({
     <Section background={background}>
       <Container className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
-          <h2 className={`text-3xl font-semibold ${headingClassName ?? "text-[var(--fg)]"}`}>
+          <h2 className={`text-3xl font-semibold tracking-[-0.015em] md:text-4xl ${headingClassName ?? "text-[var(--fg)]"}`}>
             {headline}
           </h2>
-          <p className="max-w-2xl text-base text-[var(--muted-foreground)]">{body}</p>
+          <p className="max-w-2xl text-base leading-7 text-[var(--muted-foreground)]">{body}</p>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {items.map((item, index) => {
             const Icon = iconMap[item.icon as keyof typeof iconMap] ?? Sparkles;
             return (
-              <div key={item.title} className="relative">
-                <FeatureCard
-                  title={item.title}
-                  body={item.body}
-                  accent={index % 2 === 0}
-                />
-                <div className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--muted)] text-[var(--primary)]">
-                  <Icon size={20} />
-                </div>
-              </div>
+              <FeatureCard
+                key={item.title}
+                title={item.title}
+                body={item.body}
+                accent={index % 2 === 0}
+                icon={
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--border)_70%,white)] bg-[var(--muted)] text-[var(--primary)] shadow-[var(--shadow-soft)]">
+                    <Icon size={20} />
+                  </div>
+                }
+              />
             );
           })}
         </div>

@@ -34,13 +34,13 @@ export function ServiceCard({
         ) : null}
       </div>
       <CardHeader className="gap-2">
-        <CardTitle className="text-xl text-[var(--fg)]">{title}</CardTitle>
-        <div className="text-sm text-[var(--muted-foreground)]">
-          {duration} · {priceFrom}
+        <CardTitle>{title}</CardTitle>
+        <div className="text-sm font-medium text-[var(--primary)]">
+          {duration} | {priceFrom}
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <p className="text-sm text-[var(--muted-foreground)]">{description}</p>
+        <p className="text-sm leading-6 text-[var(--muted-foreground)]">{description}</p>
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <Badge key={tag}>{tag}</Badge>
@@ -51,7 +51,7 @@ export function ServiceCard({
   );
 
   return href ? (
-    <Link href={href} className="block transition hover:-translate-y-1">
+    <Link href={href} className="block">
       {card}
     </Link>
   ) : (
