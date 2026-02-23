@@ -8,6 +8,7 @@ import {
   fullNameSchema,
   passwordSchema
 } from "@/lib/security";
+import { applySessionCookie, createSession, recordLoginEvent } from "@/lib/authSession";
 
 const REGISTER_WINDOW_MS = 30 * 60 * 1000;
 const MAX_REGISTER_ATTEMPTS = 10;
@@ -121,5 +122,10 @@ export async function POST(request: Request) {
   );
 
   const user = await get<UserRow>("SELECT * FROM users WHERE id = ?", [id]);
-  return NextResponse.json({ user: user ? toSessionUser(user) : null }, { status: 201 });
+  const session = await createSession(id, "email");
+  await recordLoginEvent(id, "email", request);
+
+  const response = NextResponse.json({ user: user ? toSessionUser(user) : null }, { status: 201 });
+  applySessionCookie(response, session.token, session.expiresAt);
+  return response;
 }
