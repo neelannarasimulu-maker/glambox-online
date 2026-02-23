@@ -2,8 +2,34 @@ import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import { get, run } from "@/lib/db";
 import { hashPassword, toSessionUser, type UserRow } from "@/lib/auth";
+import {
+  emailSchema,
+  enforceRateLimit,
+  fullNameSchema,
+  passwordSchema
+} from "@/lib/security";
+
+const REGISTER_WINDOW_MS = 30 * 60 * 1000;
+const MAX_REGISTER_ATTEMPTS = 10;
 
 export async function POST(request: Request) {
+  const rateLimit = enforceRateLimit(
+    request,
+    "auth:register",
+    MAX_REGISTER_ATTEMPTS,
+    REGISTER_WINDOW_MS
+  );
+
+  if (rateLimit.limited) {
+    return NextResponse.json(
+      { error: "Too many registration attempts. Please try again later." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateLimit.retryAfterSeconds) }
+      }
+    );
+  }
+
   const body = await request.json();
   const {
     email,
@@ -41,30 +67,40 @@ export async function POST(request: Request) {
     onboardingCompleted?: boolean;
   };
 
-  const normalizedEmail = email?.trim().toLowerCase();
-  const normalizedName = fullName?.trim();
+  const parsedEmail = emailSchema.safeParse(email);
+  const parsedPassword = passwordSchema.safeParse(password);
+  const parsedName = fullNameSchema.safeParse(fullName);
 
-  if (!normalizedEmail || !password || !normalizedName) {
-    return NextResponse.json({ error: "Email, password, and full name are required." }, { status: 400 });
+  if (!parsedEmail.success || !parsedPassword.success || !parsedName.success) {
+    return NextResponse.json(
+      {
+        error:
+          parsedEmail.error?.issues[0]?.message ||
+          parsedPassword.error?.issues[0]?.message ||
+          parsedName.error?.issues[0]?.message ||
+          "Email, password, and full name are required."
+      },
+      { status: 400 }
+    );
   }
 
-  const existingUser = await get<UserRow>("SELECT * FROM users WHERE email = ?", [normalizedEmail]);
+  const existingUser = await get<UserRow>("SELECT * FROM users WHERE email = ?", [parsedEmail.data]);
   if (existingUser) {
     return NextResponse.json({ error: "An account with this email already exists." }, { status: 409 });
   }
 
   const id = randomUUID();
   const now = new Date().toISOString();
-  const passwordHash = await hashPassword(password);
+  const passwordHash = await hashPassword(parsedPassword.data);
 
   await run(
     `INSERT INTO users (id, email, password_hash, full_name, phone, date_of_birth, address, city, country, bio, preferences, dislikes, medical_info, hair_preferences, nail_preferences, food_preferences, onboarding_completed, auth_provider, created_at, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       id,
-      normalizedEmail,
+      parsedEmail.data,
       passwordHash,
-      normalizedName,
+      parsedName.data,
       phone || null,
       dateOfBirth || null,
       address || null,

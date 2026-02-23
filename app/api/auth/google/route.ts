@@ -2,30 +2,60 @@ import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import { get, run } from "@/lib/db";
 import { toSessionUser, type UserRow } from "@/lib/auth";
+import { verifyGoogleIdToken } from "@/lib/googleAuth";
+import { enforceRateLimit } from "@/lib/security";
+
+const GOOGLE_WINDOW_MS = 10 * 60 * 1000;
+const MAX_GOOGLE_ATTEMPTS = 20;
 
 export async function POST(request: Request) {
-  const body = await request.json();
-  const { email, fullName } = body as { email?: string; fullName?: string };
-  const normalizedEmail = email?.trim().toLowerCase();
-  const normalizedName = fullName?.trim();
-
-  if (!normalizedEmail) {
-    return NextResponse.json({ error: "Google sign-in requires an email." }, { status: 400 });
-  }
-
-  const existingUser = await get<UserRow>("SELECT * FROM users WHERE email = ?", [normalizedEmail]);
-  const now = new Date().toISOString();
-
-  if (existingUser) {
-    await run("UPDATE users SET full_name = ?, auth_provider = ?, updated_at = ? WHERE email = ?", [normalizedName || existingUser.full_name, "google", now, normalizedEmail]);
-  } else {
-    await run(
-      `INSERT INTO users (id, email, password_hash, full_name, onboarding_completed, auth_provider, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [randomUUID(), normalizedEmail, null, normalizedName || normalizedEmail.split("@")[0], 0, "google", now, now]
+  const rateLimit = enforceRateLimit(request, "auth:google", MAX_GOOGLE_ATTEMPTS, GOOGLE_WINDOW_MS);
+  if (rateLimit.limited) {
+    return NextResponse.json(
+      {
+        error: "Too many Google sign-in attempts. Please try again later."
+      },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateLimit.retryAfterSeconds) }
+      }
     );
   }
 
-  const user = await get<UserRow>("SELECT * FROM users WHERE email = ?", [normalizedEmail]);
-  return NextResponse.json({ user: user ? toSessionUser(user) : null });
+  const body = await request.json();
+  const { idToken } = body as { idToken?: string };
+
+  if (!idToken) {
+    return NextResponse.json({ error: "Google sign-in requires a valid identity token." }, { status: 400 });
+  }
+
+  try {
+    const identity = await verifyGoogleIdToken(idToken);
+    const normalizedEmail = identity.email.toLowerCase();
+    const normalizedName = identity.fullName.trim();
+
+    const existingUser = await get<UserRow>("SELECT * FROM users WHERE email = ?", [normalizedEmail]);
+    const now = new Date().toISOString();
+
+    if (existingUser) {
+      const provider = existingUser.password_hash ? "hybrid" : "google";
+      await run("UPDATE users SET full_name = ?, auth_provider = ?, updated_at = ? WHERE email = ?", [
+        normalizedName || existingUser.full_name,
+        provider,
+        now,
+        normalizedEmail
+      ]);
+    } else {
+      await run(
+        `INSERT INTO users (id, email, password_hash, full_name, onboarding_completed, auth_provider, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [randomUUID(), normalizedEmail, null, normalizedName, 0, "google", now, now]
+      );
+    }
+
+    const user = await get<UserRow>("SELECT * FROM users WHERE email = ?", [normalizedEmail]);
+    return NextResponse.json({ user: user ? toSessionUser(user) : null });
+  } catch {
+    return NextResponse.json({ error: "Google sign-in could not be verified." }, { status: 401 });
+  }
 }
