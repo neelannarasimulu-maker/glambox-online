@@ -28,24 +28,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
   }
 
-  const user = await get<UserRow>("SELECT * FROM users WHERE email = ?", [parsedEmail.data]);
+  const user = await get<UserRow>("SELECT * FROM users WHERE lower(email) = ?", [parsedEmail.data]);
   if (!user) {
     return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
   }
 
-  if (!user.password_hash && user.auth_provider === "google") {
+  if (!user.password_hash) {
     return NextResponse.json(
       {
-        error: "This account uses Google sign-in.",
-        code: "ACCOUNT_PROVIDER_REQUIRED",
-        provider: "google"
+        error: "This account does not have a password yet. Reset your password to continue.",
+        code: "PASSWORD_RESET_REQUIRED"
       },
-      { status: 409 }
+      { status: 403 }
     );
-  }
-
-  if (!user.password_hash) {
-    return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
   }
 
   const isValidPassword = await comparePassword(password, user.password_hash);

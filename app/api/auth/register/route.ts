@@ -84,7 +84,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const existingUser = await get<UserRow>("SELECT * FROM users WHERE email = ?", [parsedEmail.data]);
+  const existingUser = await get<UserRow>("SELECT * FROM users WHERE lower(email) = ?", [parsedEmail.data]);
   if (existingUser) {
     return NextResponse.json({ error: "An account with this email already exists." }, { status: 409 });
   }

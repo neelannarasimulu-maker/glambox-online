@@ -7,7 +7,8 @@ Glambox Online Web & Mobile Portal.
 A new authentication flow has been added alongside the existing mock pages:
 
 - `/auth/register` for account creation with personal info fields.
-- `/auth/login` for login using email/password or verified Google sign-in.
+- `/auth/login` for secure email/password sign-in.
+- `/auth/reset-password` for password recovery using reset codes.
 - `/profile` for editing and saving personal profile information.
 
 All authentication data is persisted in a local SQLite database file (`glambox.db`) through API routes under `app/api/auth/*`.
@@ -15,8 +16,8 @@ All authentication data is persisted in a local SQLite database file (`glambox.d
 ## Security hardening included
 
 - Server-side input validation for email, full name, and password complexity.
-- In-memory API rate limiting for login, registration, and Google auth endpoints.
-- Google login now requires a valid Google ID token verified server-side.
+- In-memory API rate limiting for login, registration, and password reset endpoints.
+- Passwords are hashed with bcrypt and validated against strong complexity rules.
 
 ## Run locally
 
@@ -25,16 +26,9 @@ npm install
 npm run dev
 ```
 
-### Google sign-in setup
-
-Create an OAuth 2.0 Client ID in Google Cloud Console and set:
-
-```bash
-GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
-```
-
 Then open:
 
 - `http://localhost:3000/auth/register`
 - `http://localhost:3000/auth/login`
+- `http://localhost:3000/auth/reset-password`
 - `http://localhost:3000/profile`

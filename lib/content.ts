@@ -12,12 +12,24 @@ const popupMap = {
   food: foodData
 };
 
+const parsedSiteConfig = SiteSchema.safeParse(siteData);
+if (!parsedSiteConfig.success) {
+  throw new Error(`Invalid site.json: ${parsedSiteConfig.error.message}`);
+}
+const siteConfig: SiteConfig = parsedSiteConfig.data;
+
+const parsedPopupMap = Object.fromEntries(
+  Object.entries(popupMap).map(([key, value]) => {
+    const parsed = PopupSchema.safeParse(value);
+    if (!parsed.success) {
+      throw new Error(`Invalid popup config for ${key}: ${parsed.error.message}`);
+    }
+    return [key, parsed.data];
+  })
+) as Record<keyof typeof popupMap, PopupConfig>;
+
 export function getSiteConfig(): SiteConfig {
-  const parsed = SiteSchema.safeParse(siteData);
-  if (!parsed.success) {
-    throw new Error(`Invalid site.json: ${parsed.error.message}`);
-  }
-  return parsed.data;
+  return siteConfig;
 }
 
 export function getPopupConfig(popupKey: string): PopupConfig {
@@ -25,11 +37,7 @@ export function getPopupConfig(popupKey: string): PopupConfig {
   if (!keyResult.success) {
     throw new Error(`Invalid popup key: ${keyResult.error.message}`);
   }
-  const parsed = PopupSchema.safeParse(popupMap[keyResult.data]);
-  if (!parsed.success) {
-    throw new Error(`Invalid popup config: ${parsed.error.message}`);
-  }
-  return parsed.data;
+  return parsedPopupMap[keyResult.data];
 }
 
 export function getPopupKeys() {

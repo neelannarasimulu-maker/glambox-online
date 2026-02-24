@@ -33,6 +33,39 @@ type Bucket = {
 };
 
 const rateLimitStore = new Map<string, Bucket>();
+let lastRateLimitCleanupAt = 0;
+const RATE_LIMIT_CLEANUP_INTERVAL_MS = 60 * 1000;
+const RATE_LIMIT_MAX_ENTRIES = 10_000;
+
+function cleanupRateLimitStore(now: number) {
+  if (
+    now - lastRateLimitCleanupAt < RATE_LIMIT_CLEANUP_INTERVAL_MS &&
+    rateLimitStore.size < RATE_LIMIT_MAX_ENTRIES
+  ) {
+    return;
+  }
+
+  for (const [key, bucket] of rateLimitStore.entries()) {
+    if (bucket.resetAt <= now) {
+      rateLimitStore.delete(key);
+    }
+  }
+
+  // Hard safety cap to prevent unbounded in-memory growth under abnormal traffic.
+  if (rateLimitStore.size > RATE_LIMIT_MAX_ENTRIES) {
+    const overflow = rateLimitStore.size - RATE_LIMIT_MAX_ENTRIES;
+    let removed = 0;
+    for (const key of rateLimitStore.keys()) {
+      rateLimitStore.delete(key);
+      removed += 1;
+      if (removed >= overflow) {
+        break;
+      }
+    }
+  }
+
+  lastRateLimitCleanupAt = now;
+}
 
 function getClientIp(request: Request) {
   const forwardedFor = request.headers.get("x-forwarded-for");
@@ -46,6 +79,7 @@ function getClientIp(request: Request) {
 
 export function enforceRateLimit(request: Request, action: string, maxAttempts: number, windowMs: number) {
   const now = Date.now();
+  cleanupRateLimitStore(now);
   const clientIp = getClientIp(request);
   const key = `${action}:${clientIp}`;
   const bucket = rateLimitStore.get(key);

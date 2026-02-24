@@ -53,7 +53,6 @@ type AuthState = {
   user?: SessionUser;
   login: (email: string, password: string) => Promise<SessionUser>;
   register: (payload: RegisterPayload) => Promise<SessionUser>;
-  loginWithGoogle: (idToken: string) => Promise<SessionUser>;
   updateProfile: (payload: ProfilePayload) => Promise<SessionUser>;
   logout: () => void;
 };
@@ -141,13 +140,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return result.user;
   };
 
-  const loginWithGoogle = async (idToken: string) => {
-    const result = await requestAuth<{ user: SessionUser }>("/api/auth/google", { idToken });
-    setUser(result.user);
-    window.localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
-    return result.user;
-  };
-
   const updateProfile = async (payload: ProfilePayload) => {
     const response = await fetch("/api/auth/profile", {
       method: "PUT",
@@ -177,7 +169,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       login,
       register,
-      loginWithGoogle,
       updateProfile,
       logout
     }),

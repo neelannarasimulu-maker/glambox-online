@@ -11,6 +11,8 @@ export type BookingRow = {
   booking_time: string;
   status: string;
   notes: string | null;
+  last_action: string | null;
+  action_reason: string | null;
   source: string;
   created_at: string;
   updated_at: string;
@@ -29,6 +31,8 @@ export type Booking = {
   bookingTime: string;
   status: string;
   notes?: string | null;
+  lastAction?: string | null;
+  actionReason?: string | null;
   source: string;
   createdAt: string;
   updatedAt: string;
@@ -48,6 +52,8 @@ export function toBooking(row: BookingRow): Booking {
     bookingTime: row.booking_time,
     status: row.status,
     notes: row.notes,
+    lastAction: row.last_action,
+    actionReason: row.action_reason,
     source: row.source,
     createdAt: row.created_at,
     updatedAt: row.updated_at
