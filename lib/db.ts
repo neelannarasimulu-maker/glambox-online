@@ -29,6 +29,34 @@ db.serialize(() => {
     )
   `);
 
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS auth_sessions (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      token_hash TEXT UNIQUE NOT NULL,
+      provider TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      revoked_at TEXT,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    )
+  `);
+  db.run("CREATE INDEX IF NOT EXISTS idx_auth_sessions_user ON auth_sessions(user_id)");
+  db.run("CREATE INDEX IF NOT EXISTS idx_auth_sessions_token ON auth_sessions(token_hash)");
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS auth_login_events (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      provider TEXT NOT NULL,
+      ip_address TEXT,
+      user_agent TEXT,
+      occurred_at TEXT NOT NULL
+    )
+  `);
+  db.run("CREATE INDEX IF NOT EXISTS idx_auth_login_events_user_time ON auth_login_events(user_id, occurred_at)");
+
   db.run(`
     CREATE TABLE IF NOT EXISTS bookings (
       id TEXT PRIMARY KEY,

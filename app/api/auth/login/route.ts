@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { comparePassword, toSessionUser, type UserRow } from "@/lib/auth";
 import { get } from "@/lib/db";
 import { emailSchema, enforceRateLimit } from "@/lib/security";
+import { applySessionCookie, createSession, recordLoginEvent } from "@/lib/authSession";
 
 const LOGIN_WINDOW_MS = 10 * 60 * 1000;
 const MAX_LOGIN_ATTEMPTS = 12;
@@ -48,5 +49,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
   }
 
-  return NextResponse.json({ user: toSessionUser(user) });
+  const session = await createSession(user.id, "email");
+  await recordLoginEvent(user.id, "email", request);
+
+  const response = NextResponse.json({ user: toSessionUser(user) });
+  applySessionCookie(response, session.token, session.expiresAt);
+  return response;
 }
