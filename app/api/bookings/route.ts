@@ -19,14 +19,21 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "User not found." }, { status: 404 });
     }
 
-    const today = new Date().toISOString().slice(0, 10);
+    const nowIso = new Date().toISOString();
+    const today = nowIso.slice(0, 10);
+    const nowTime = nowIso.slice(11, 16);
     const rows =
       scope === "active"
         ? await all<BookingRow>(
             `SELECT * FROM bookings
-             WHERE user_id = ? AND status != 'cancelled' AND booking_date >= ?
+             WHERE user_id = ?
+               AND status IN ('confirmed', 'rescheduled')
+               AND (
+                 booking_date > ?
+                 OR (booking_date = ? AND booking_time >= ?)
+               )
              ORDER BY booking_date ASC, booking_time ASC, created_at DESC`,
-            [userId, today]
+            [userId, today, today, nowTime]
           )
         : await all<BookingRow>(
             `SELECT * FROM bookings WHERE user_id = ? ORDER BY booking_date ASC, booking_time ASC, created_at DESC`,

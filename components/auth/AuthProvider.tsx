@@ -112,16 +112,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(result.user);
     return result.user;
   };
-
-<<<<<<< HEAD
-=======
-  const loginWithGoogle = async (idToken: string) => {
-    const result = await requestAuth<{ user: SessionUser }>("/api/auth/google", { idToken });
-    setUser(result.user);
-    return result.user;
-  };
-
->>>>>>> bee3f64297bbcd7cb4ab6cfc649c1d5729c78c34
   const updateProfile = async (payload: ProfilePayload) => {
     const response = await fetch("/api/auth/profile", {
       method: "PUT",
