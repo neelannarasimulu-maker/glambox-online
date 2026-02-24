@@ -59,6 +59,24 @@ type AuthState = {
 
 const AuthContext = createContext<AuthState | null>(null);
 
+async function parseJsonResponse<T>(response: Response): Promise<T | null> {
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    return null;
+  }
+
+  const raw = await response.text();
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(raw) as T;
+  } catch {
+    return null;
+  }
+}
+
 async function requestAuth<T>(url: string, payload: Record<string, unknown>) {
   const response = await fetch(url, {
     method: "POST",
@@ -66,19 +84,26 @@ async function requestAuth<T>(url: string, payload: Record<string, unknown>) {
     body: JSON.stringify(payload)
   });
 
-  const result = (await response.json()) as T & {
-    error?: string;
-    code?: string;
-    provider?: string;
-  };
+  const result = await parseJsonResponse<
+    T & {
+      error?: string;
+      code?: string;
+      provider?: string;
+    }
+  >(response);
+
   if (!response.ok) {
-    const error = new Error(result.error || "Authentication request failed.") as Error & {
+    const error = new Error(result?.error || "Authentication request failed.") as Error & {
       code?: string;
       provider?: string;
     };
-    error.code = result.code;
-    error.provider = result.provider;
+    error.code = result?.code;
+    error.provider = result?.provider;
     throw error;
+  }
+
+  if (!result) {
+    throw new Error("Authentication service returned an invalid response.");
   }
 
   return result;
@@ -90,9 +115,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     fetch("/api/auth/session")
-      .then((response) => response.json())
-      .then((result: { user?: SessionUser | null }) => {
-        if (result.user) {
+      .then((response) => parseJsonResponse<{ user?: SessionUser | null }>(response))
+      .then((result) => {
+        if (result?.user) {
           setUser(result.user);
         }
       })
@@ -119,9 +144,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       body: JSON.stringify(payload)
     });
 
-    const result = (await response.json()) as { user?: SessionUser; error?: string };
-    if (!response.ok || !result.user) {
-      throw new Error(result.error || "Could not update profile.");
+    const result = await parseJsonResponse<{ user?: SessionUser; error?: string }>(response);
+    if (!response.ok || !result?.user) {
+      throw new Error(result?.error || "Could not update profile.");
     }
 
     setUser(result.user);

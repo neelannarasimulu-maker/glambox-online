@@ -1,7 +1,9 @@
 import path from "path";
 import sqlite3 from "sqlite3";
 
-const databasePath = path.join(process.cwd(), "glambox.db");
+const databasePath =
+  process.env.DATABASE_PATH ||
+  (process.env.VERCEL ? path.join("/tmp", "glambox.db") : path.join(process.cwd(), "glambox.db"));
 const db = new sqlite3.Database(databasePath);
 db.configure("busyTimeout", 5000);
 
