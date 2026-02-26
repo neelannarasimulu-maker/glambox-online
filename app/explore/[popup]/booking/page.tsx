@@ -5,7 +5,7 @@ import { FoodBuilder } from "@/components/food/FoodBuilder";
 import { getPopupConfig, getPopupKeys } from "@/lib/content";
 
 export default function PopupBookingPage({ params }: { params: { popup: string } }) {
-  if (!getPopupKeys().includes(params.popup as "hair" | "nails" | "wellness" | "food")) {
+  if (!getPopupKeys().includes(params.popup)) {
     notFound();
   }
 

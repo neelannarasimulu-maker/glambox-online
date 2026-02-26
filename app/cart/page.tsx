@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCart, priceLabel } from "@/components/cart/CartProvider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -33,9 +34,11 @@ export default function CartPage() {
             <div className="flex flex-col gap-4">
               {items.map((item) => (
                 <Card key={item.itemKey} className="flex flex-col gap-4 p-5 md:flex-row">
-                  <img
+                  <Image
                     src={item.image.src}
                     alt={item.image.alt}
+                    width={96}
+                    height={96}
                     className="h-24 w-24 rounded-2xl object-cover"
                   />
                   <div className="flex flex-1 flex-col gap-2">

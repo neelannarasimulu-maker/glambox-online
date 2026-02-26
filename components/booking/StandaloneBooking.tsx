@@ -73,8 +73,14 @@ export function StandaloneBooking({ labels, popups }: StandaloneBookingProps) {
     [popups, popupKey]
   );
 
-  const services = selectedPopup?.pages.services.services ?? [];
-  const consultants = selectedPopup?.pages.consultants.consultants ?? [];
+  const services = useMemo(
+    () => selectedPopup?.pages.services.services ?? [],
+    [selectedPopup]
+  );
+  const consultants = useMemo(
+    () => selectedPopup?.pages.consultants.consultants ?? [],
+    [selectedPopup]
+  );
 
   useEffect(() => {
     if (!services.length) {

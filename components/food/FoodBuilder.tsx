@@ -1,9 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Section } from "@/components/Section";
+import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 
 type BuilderConfig = {
@@ -102,9 +103,11 @@ export function FoodBuilder({ builder }: { builder: BuilderConfig }) {
                             onChange={() => toggleItem(category.id, item.name)}
                             className="h-4 w-4 rounded border-[var(--border)] text-[var(--accent-strong)]"
                           />
-                          <img
+                          <Image
                             src={item.image}
                             alt={item.name}
+                            width={48}
+                            height={48}
                             className="h-12 w-12 rounded-xl object-cover"
                           />
                           <div className="flex flex-1 flex-col">

@@ -11,6 +11,7 @@ const popupMap = {
   wellness: wellnessData,
   food: foodData
 };
+type PopupKey = keyof typeof popupMap;
 
 const parsedSiteConfig = SiteSchema.safeParse(siteData);
 if (!parsedSiteConfig.success) {
@@ -26,7 +27,7 @@ const parsedPopupMap = Object.fromEntries(
     }
     return [key, parsed.data];
   })
-) as Record<keyof typeof popupMap, PopupConfig>;
+) as Record<PopupKey, PopupConfig>;
 
 export function getSiteConfig(): SiteConfig {
   return siteConfig;
@@ -37,9 +38,12 @@ export function getPopupConfig(popupKey: string): PopupConfig {
   if (!keyResult.success) {
     throw new Error(`Invalid popup key: ${keyResult.error.message}`);
   }
-  return parsedPopupMap[keyResult.data];
+  if (!(keyResult.data in parsedPopupMap)) {
+    throw new Error(`Unknown popup key: ${keyResult.data}`);
+  }
+  return parsedPopupMap[keyResult.data as PopupKey];
 }
 
 export function getPopupKeys() {
-  return Object.keys(popupMap) as Array<keyof typeof popupMap>;
+  return Object.keys(popupMap);
 }

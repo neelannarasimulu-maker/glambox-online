@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -71,7 +72,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }, [items]);
 
-  const addItem = (item: Omit<CartItem, "quantity">, quantity = 1) => {
+  const addItem = useCallback((item: Omit<CartItem, "quantity">, quantity = 1) => {
     setItems((prev) => {
       const existing = prev.find((entry) => entry.itemKey === item.itemKey);
       if (existing) {
@@ -83,9 +84,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { ...item, quantity }];
     });
-  };
+  }, []);
 
-  const updateQuantity = (itemKey: string, quantity: number) => {
+  const updateQuantity = useCallback((itemKey: string, quantity: number) => {
     setItems((prev) =>
       prev
         .map((entry) =>
@@ -93,21 +94,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
         )
         .filter((entry) => entry.quantity > 0)
     );
-  };
+  }, []);
 
-  const removeItem = (itemKey: string) => {
+  const removeItem = useCallback((itemKey: string) => {
     setItems((prev) => prev.filter((entry) => entry.itemKey !== itemKey));
-  };
+  }, []);
 
-  const clear = () => {
+  const clear = useCallback(() => {
     setItems([]);
-  };
+  }, []);
 
-  const completeOrder = () => {
+  const completeOrder = useCallback(() => {
     setLastOrder(items);
     window.localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(items));
     clear();
-  };
+  }, [clear, items]);
 
   const subtotal = useMemo(
     () => items.reduce((sum, entry) => sum + entry.price * entry.quantity, 0),
@@ -130,7 +131,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       completeOrder,
       lastOrder
     }),
-    [items, subtotal, itemCount, lastOrder]
+    [items, addItem, updateQuantity, removeItem, clear, subtotal, itemCount, completeOrder, lastOrder]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { SiteConfig } from "@/lib/schemas";
 import { Container } from "@/components/ui/container";
 
@@ -13,7 +14,7 @@ export function Footer({ config }: FooterProps) {
         <div className="grid gap-10 md:grid-cols-4">
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3">
-              <img src={config.brand.logo.src} alt={config.brand.logo.alt} className="h-8 w-8" />
+              <Image src={config.brand.logo.src} alt={config.brand.logo.alt} width={32} height={32} className="h-8 w-8" />
               <span className="text-lg font-semibold text-[var(--fg)]">
                 {config.brand.name}
               </span>

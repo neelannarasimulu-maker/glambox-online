@@ -12,7 +12,7 @@ import { getPopupConfig, getPopupKeys } from "@/lib/content";
 import type { BackgroundKey } from "@/lib/theme/backgrounds";
 
 export default function PopupInfoPage({ params }: { params: { popup: string } }) {
-  if (!getPopupKeys().includes(params.popup as "hair" | "nails" | "wellness" | "food")) {
+  if (!getPopupKeys().includes(params.popup)) {
     notFound();
   }
 
@@ -53,6 +53,8 @@ export default function PopupInfoPage({ params }: { params: { popup: string } })
         items={info.highlights}
         background={sectionBackgrounds.highlights}
         headingClassName="text-[var(--heading)]"
+        bodyClassName="max-w-4xl"
+        accentAll
       />
       <ServiceCards
         headline={services.headline}

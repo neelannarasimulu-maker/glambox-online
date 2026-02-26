@@ -1,7 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Section } from "@/components/Section";
+import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import type { BackgroundKey } from "@/lib/theme/backgrounds";
 import type { PopupConfig } from "@/lib/schemas";
@@ -34,11 +35,15 @@ export function ProductGrid({
             const href = basePath ? `${basePath}/${product.id}` : undefined;
             const card = (
               <Card accent className="overflow-hidden">
-                <img
-                  src={product.image.src}
-                  alt={product.image.alt}
-                  className="h-44 w-full object-cover"
-                />
+                <div className="relative h-44 w-full">
+                  <Image
+                    src={product.image.src}
+                    alt={product.image.alt}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
                 <CardHeader>
                   <div className="flex items-center justify-between gap-2">
                     <CardTitle>{product.name}</CardTitle>

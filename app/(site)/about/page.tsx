@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Section } from "@/components/Section";
+import { Section } from "@/components/ui/section";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 

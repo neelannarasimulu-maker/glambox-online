@@ -1,0 +1,10 @@
+{
+  "routes": {
+    "/(site)/page": 125,
+    "/(site)/book/page": 125,
+    "/explore/[popup]/page": 125,
+    "/explore/[popup]/consultants/[consultant]/page": 130,
+    "/auth/login/page": 120,
+    "/dashboard/page": 160
+  }
+}

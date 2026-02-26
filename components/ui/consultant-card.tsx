@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -25,8 +26,8 @@ export function ConsultantCard({
 }: ConsultantCardProps) {
   const card = (
     <Card accent className="overflow-hidden">
-      <div className="relative">
-        <img src={image.src} alt={image.alt} className="h-52 w-full object-cover" />
+      <div className="relative h-52 w-full">
+        <Image src={image.src} alt={image.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
         {badge ? (
           <div className="absolute left-4 top-4">
             <Badge variant="pop">{badge}</Badge>

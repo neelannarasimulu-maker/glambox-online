@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Section } from "@/components/Section";
+import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { FeatureCard } from "@/components/ui/feature-card";
 import type { BackgroundKey } from "@/lib/theme/backgrounds";
@@ -40,7 +41,7 @@ export function BookingSection({
         </div>
         <div>
           <Button asChild>
-            <a href={cta.href}>{cta.label}</a>
+            <Link href={cta.href}>{cta.label}</Link>
           </Button>
         </div>
       </Container>

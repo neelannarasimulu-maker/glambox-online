@@ -10,9 +10,9 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     <div
       ref={ref}
       className={cn(
-        "group relative rounded-[var(--radius)] border border-[color-mix(in_srgb,var(--border)_76%,white)] bg-[color-mix(in_srgb,var(--card)_94%,white)] shadow-[var(--shadow-soft)] backdrop-blur-[2px] transition duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow)]",
+        "group relative rounded-[var(--radius)] border border-[color-mix(in_srgb,var(--border)_74%,white)] bg-[color-mix(in_srgb,var(--card)_94%,white)] shadow-[var(--shadow-soft)] backdrop-blur-[2px] transition duration-500 hover:-translate-y-1.5 hover:shadow-[var(--shadow)]",
         accent &&
-          "overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-gradient-to-r before:from-[var(--primary)] before:via-[var(--accent)] before:to-[var(--secondary)]",
+          "overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-1.5 before:bg-gradient-to-r before:from-[var(--primary)] before:via-[var(--accent)] before:to-[var(--secondary)] after:pointer-events-none after:absolute after:inset-0 after:bg-[radial-gradient(80%_60%_at_100%_0%,color-mix(in_srgb,var(--accent)_10%,transparent)_0%,transparent_70%)]",
         className
       )}
       {...props}

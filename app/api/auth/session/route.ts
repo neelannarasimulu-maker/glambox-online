@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { toSessionUser, type UserRow } from "@/lib/auth";
-import { get } from "@/lib/db";
 import { getAuthenticatedUserId } from "@/lib/authSession";
+import { AuthServiceError, getSessionUser } from "@/modules/auth/service";
 
 export async function GET() {
   const userId = await getAuthenticatedUserId();
@@ -9,10 +8,14 @@ export async function GET() {
     return NextResponse.json({ user: null }, { status: 401 });
   }
 
-  const user = await get<UserRow>("SELECT * FROM users WHERE id = ?", [userId]);
-  if (!user) {
-    return NextResponse.json({ user: null }, { status: 404 });
+  try {
+    const user = await getSessionUser(userId);
+    return NextResponse.json({ user });
+  } catch (error) {
+    if (error instanceof AuthServiceError && error.status === 404) {
+      return NextResponse.json({ user: null }, { status: 404 });
+    }
+    console.error("Failed to fetch session user", error);
+    return NextResponse.json({ user: null }, { status: 500 });
   }
-
-  return NextResponse.json({ user: toSessionUser(user) });
 }

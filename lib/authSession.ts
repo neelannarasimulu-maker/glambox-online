@@ -1,19 +1,12 @@
 import { createHash, randomBytes } from "crypto";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { get, run } from "@/lib/db";
+import type { Prisma, PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/db";
 
 const SESSION_COOKIE_NAME = "glambox_session";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 14;
-
-type SessionRow = {
-  id: string;
-  user_id: string;
-  token_hash: string;
-  provider: string;
-  expires_at: string;
-  revoked_at: string | null;
-};
+type DbClient = PrismaClient | Prisma.TransactionClient;
 
 function hashToken(token: string) {
   return createHash("sha256").update(token).digest("hex");
@@ -29,16 +22,23 @@ function buildCookieOptions(expires: Date) {
   };
 }
 
-export async function createSession(userId: string, provider: string) {
+export async function createSession(userId: string, provider: string, db: DbClient = prisma) {
   const token = randomBytes(48).toString("hex");
   const id = randomBytes(16).toString("hex");
   const expiresAt = new Date(Date.now() + SESSION_TTL_MS);
+  const now = new Date();
 
-  await run(
-    `INSERT INTO auth_sessions (id, user_id, token_hash, provider, expires_at, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [id, userId, hashToken(token), provider, expiresAt.toISOString(), new Date().toISOString(), new Date().toISOString()]
-  );
+  await db.authSession.create({
+    data: {
+      id,
+      userId,
+      tokenHash: hashToken(token),
+      provider,
+      expiresAt,
+      createdAt: now,
+      updatedAt: now
+    }
+  });
 
   return { token, expiresAt };
 }
@@ -58,10 +58,10 @@ export async function revokeSessionByCookie() {
   }
 
   const tokenHash = hashToken(token);
-  await run(
-    "UPDATE auth_sessions SET revoked_at = ?, updated_at = ? WHERE token_hash = ? AND revoked_at IS NULL",
-    [new Date().toISOString(), new Date().toISOString(), tokenHash]
-  );
+  await prisma.authSession.updateMany({
+    where: { tokenHash, revokedAt: null },
+    data: { revokedAt: new Date(), updatedAt: new Date() }
+  });
 }
 
 export async function getAuthenticatedUserId() {
@@ -70,26 +70,38 @@ export async function getAuthenticatedUserId() {
     return null;
   }
 
-  const now = new Date().toISOString();
-  const session = await get<SessionRow>(
-    "SELECT * FROM auth_sessions WHERE token_hash = ? AND revoked_at IS NULL AND expires_at > ?",
-    [hashToken(token), now]
-  );
+  const session = await prisma.authSession.findFirst({
+    where: {
+      tokenHash: hashToken(token),
+      revokedAt: null,
+      expiresAt: { gt: new Date() }
+    }
+  });
 
   if (!session) {
     return null;
   }
 
-  return session.user_id;
+  return session.userId;
 }
 
-export async function recordLoginEvent(userId: string, provider: string, request: Request) {
+export async function recordLoginEvent(
+  userId: string,
+  provider: string,
+  request: Request,
+  db: DbClient = prisma
+) {
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || null;
   const userAgent = request.headers.get("user-agent") || null;
 
-  await run(
-    `INSERT INTO auth_login_events (id, user_id, provider, ip_address, user_agent, occurred_at)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    [randomBytes(16).toString("hex"), userId, provider, ip, userAgent, new Date().toISOString()]
-  );
+  await db.authLoginEvent.create({
+    data: {
+      id: randomBytes(16).toString("hex"),
+      userId,
+      provider,
+      ipAddress: ip,
+      userAgent,
+      occurredAt: new Date()
+    }
+  });
 }

@@ -1,5 +1,5 @@
 import { getSiteConfig } from "@/lib/content";
-import { Section } from "@/components/Section";
+import { Section } from "@/components/ui/section";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function FaqPage() {

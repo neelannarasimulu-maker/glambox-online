@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PopupShell } from "@/components/popup/PopupShell";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ export default function ProductDetailPage({
 }: {
   params: { popup: string; product: string };
 }) {
-  if (!getPopupKeys().includes(params.popup as "hair" | "nails" | "wellness" | "food")) {
+  if (!getPopupKeys().includes(params.popup)) {
     notFound();
   }
 
@@ -27,11 +28,15 @@ export default function ProductDetailPage({
       <section className="py-16">
         <div className="mx-auto grid w-full max-w-5xl gap-10 px-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--card)]">
-            <img
-              src={product.image.src}
-              alt={product.image.alt}
-              className="h-full w-full object-cover"
-            />
+            <div className="relative h-[460px] w-full">
+              <Image
+                src={product.image.src}
+                alt={product.image.alt}
+                fill
+                sizes="(min-width: 1024px) 42vw, 100vw"
+                className="object-cover"
+              />
+            </div>
           </div>
           <div className="flex flex-col gap-6">
             <div>

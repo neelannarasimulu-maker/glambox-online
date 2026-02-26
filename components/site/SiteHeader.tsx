@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -39,9 +40,11 @@ export function SiteHeader({ config }: SiteHeaderProps) {
     <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--card)_90%,white)]/95 backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center gap-3">
-          <img
+          <Image
             src={config.brand.logo.src}
             alt={config.brand.logo.alt}
+            width={192}
+            height={48}
             className="h-12 w-auto"
           />
           <div className="flex flex-col">

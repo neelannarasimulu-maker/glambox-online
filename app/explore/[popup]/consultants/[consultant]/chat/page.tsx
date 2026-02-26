@@ -32,7 +32,7 @@ export default function ConsultantChatPage({
 }: {
   params: { popup: string; consultant: string };
 }) {
-  if (!getPopupKeys().includes(params.popup as "hair" | "nails" | "wellness" | "food")) {
+  if (!getPopupKeys().includes(params.popup)) {
     notFound();
   }
 

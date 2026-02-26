@@ -1,6 +1,4 @@
-import { getPopupConfig, getSiteConfig } from "@/lib/content";
-import { Nav } from "@/components/ui/nav";
-import { Footer } from "@/components/ui/footer";
+import { getPopupConfig } from "@/lib/content";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -118,15 +116,11 @@ function PopupExample({ popupKey }: { popupKey: "hair" | "nails" | "wellness" })
 }
 
 export default function ThemeExamplesPage() {
-  const site = getSiteConfig();
-
   return (
     <div className="bg-[var(--bg)] text-[var(--fg)]">
-      <Nav config={site} />
       <PopupExample popupKey="hair" />
       <PopupExample popupKey="nails" />
       <PopupExample popupKey="wellness" />
-      <Footer config={site} />
     </div>
   );
 }

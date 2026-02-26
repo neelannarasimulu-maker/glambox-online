@@ -4,7 +4,7 @@ import { GalleryGrid } from "@/components/sections/GalleryGrid";
 import { getPopupConfig, getPopupKeys } from "@/lib/content";
 
 export default function PopupGalleryPage({ params }: { params: { popup: string } }) {
-  if (!getPopupKeys().includes(params.popup as "hair" | "nails" | "wellness" | "food")) {
+  if (!getPopupKeys().includes(params.popup)) {
     notFound();
   }
 

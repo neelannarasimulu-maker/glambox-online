@@ -1,4 +1,4 @@
-import { Section } from "@/components/Section";
+import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import type { BackgroundKey } from "@/lib/theme/backgrounds";
 import { getChatStatus } from "@/lib/chatStatus";

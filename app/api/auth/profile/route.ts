@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { get, run } from "@/lib/db";
-import { toSessionUser, type UserRow } from "@/lib/auth";
 import { getAuthenticatedUserId } from "@/lib/authSession";
+import { isTrustedOrigin } from "@/lib/security";
+import { AuthServiceError, getSessionUser, updateProfile } from "@/modules/auth/service";
+import { profileUpdateInputSchema } from "@/modules/auth/schemas";
 
 export async function GET() {
   const userId = await getAuthenticatedUserId();
@@ -10,98 +11,43 @@ export async function GET() {
     return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
   }
 
-  const user = await get<UserRow>("SELECT * FROM users WHERE id = ?", [userId]);
-  if (!user) {
-    return NextResponse.json({ error: "User not found." }, { status: 404 });
+  try {
+    const user = await getSessionUser(userId);
+    return NextResponse.json({ user });
+  } catch (error) {
+    if (error instanceof AuthServiceError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+    console.error("Failed to load profile", error);
+    return NextResponse.json({ error: "Could not load profile." }, { status: 500 });
   }
-
-  return NextResponse.json({ user: toSessionUser(user) });
 }
 
 export async function PUT(request: Request) {
+  if (!isTrustedOrigin(request)) {
+    return NextResponse.json({ error: "Origin not allowed." }, { status: 403 });
+  }
+
   const body = await request.json();
-  const {
-    id,
-    fullName,
-    phone,
-    dateOfBirth,
-    address,
-    city,
-    country,
-    bio,
-    preferences,
-    dislikes,
-    medicalInfo,
-    hairPreferences,
-    nailPreferences,
-    foodPreferences,
-    onboardingCompleted
-  } = body as {
-    id?: string;
-    fullName?: string;
-    phone?: string;
-    dateOfBirth?: string;
-    address?: string;
-    city?: string;
-    country?: string;
-    bio?: string;
-    preferences?: string;
-    dislikes?: string;
-    medicalInfo?: string;
-    hairPreferences?: string;
-    nailPreferences?: string;
-    foodPreferences?: string;
-    onboardingCompleted?: boolean;
-  };
+  const parsed = profileUpdateInputSchema.safeParse(body);
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0]?.message || "Invalid profile update payload.";
+    return NextResponse.json({ error: issue }, { status: 400 });
+  }
 
   const userId = await getAuthenticatedUserId();
   if (!userId) {
     return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
   }
 
-  if (id && id !== userId) {
-    return NextResponse.json({ error: "You can only edit your own profile." }, { status: 403 });
+  try {
+    const user = await updateProfile(userId, parsed.data);
+    return NextResponse.json({ user });
+  } catch (error) {
+    if (error instanceof AuthServiceError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+    console.error("Failed to update profile", error);
+    return NextResponse.json({ error: "Could not update profile." }, { status: 500 });
   }
-
-  const existingUser = await get<UserRow>("SELECT * FROM users WHERE id = ?", [userId]);
-  if (!existingUser) {
-    return NextResponse.json({ error: "User not found." }, { status: 404 });
-  }
-
-  const nextFullName = fullName?.trim() || existingUser.full_name;
-  if (!nextFullName) {
-    return NextResponse.json({ error: "Full name is required." }, { status: 400 });
-  }
-
-  const normalizeOptional = (value: string | undefined, fallback: string | null) =>
-    value === undefined ? fallback : value.trim() || null;
-
-  await run(
-    `UPDATE users SET full_name = ?, phone = ?, date_of_birth = ?, address = ?, city = ?, country = ?, bio = ?, preferences = ?, dislikes = ?, medical_info = ?, hair_preferences = ?, nail_preferences = ?, food_preferences = ?, onboarding_completed = ?, updated_at = ? WHERE id = ?`,
-    [
-      nextFullName,
-      normalizeOptional(phone, existingUser.phone),
-      normalizeOptional(dateOfBirth, existingUser.date_of_birth),
-      normalizeOptional(address, existingUser.address),
-      normalizeOptional(city, existingUser.city),
-      normalizeOptional(country, existingUser.country),
-      normalizeOptional(bio, existingUser.bio),
-      normalizeOptional(preferences, existingUser.preferences),
-      normalizeOptional(dislikes, existingUser.dislikes),
-      normalizeOptional(medicalInfo, existingUser.medical_info),
-      normalizeOptional(hairPreferences, existingUser.hair_preferences),
-      normalizeOptional(nailPreferences, existingUser.nail_preferences),
-      normalizeOptional(foodPreferences, existingUser.food_preferences),
-      onboardingCompleted === undefined
-        ? existingUser.onboarding_completed ?? 0
-        : onboardingCompleted
-          ? 1
-          : 0,
-      new Date().toISOString(),
-      userId
-    ]
-  );
-
-  const user = await get<UserRow>("SELECT * FROM users WHERE id = ?", [userId]);
-  return NextResponse.json({ user: user ? toSessionUser(user) : null });
 }

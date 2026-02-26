@@ -4,12 +4,29 @@
   "private": true,
   "scripts": {
     "clean": "node scripts/clean-build.mjs",
-    "dev": "next dev",
+    "dev": "npm run db:check && npm run db:migrate:deploy && next dev",
     "build": "npm run clean && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
+    "test:unit": "node --import tsx --test test/unit/**/*.test.ts",
+    "test:integration": "node --import tsx --test test/integration/**/*.test.ts",
+    "test:e2e": "node --import tsx --test test/e2e/**/*.test.ts",
+    "perf:check": "node scripts/check-performance-budgets.mjs && node scripts/check-image-strategy.mjs",
+    "wcag:check": "node scripts/check-wcag-checklist.mjs",
+    "ci:quality": "npm run build && npm run test && npm run perf:check && npm run wcag:check",
+    "db:up": "echo Using Neon managed Postgres; no local database container to start.",
+    "db:down": "echo Using Neon managed Postgres; no local database container to stop.",
+    "db:check": "dotenv -e .env.local -- node scripts/check-db-env.mjs",
+    "db:generate": "npm run db:check && dotenv -e .env.local -- prisma generate",
+    "db:migrate": "npm run db:check && dotenv -e .env.local -- prisma migrate dev",
+    "db:migrate:deploy": "npm run db:check && dotenv -e .env.local -- prisma migrate deploy",
+    "db:migrate:deploy:env": "prisma migrate deploy",
+    "db:seed": "npm run db:check && dotenv -e .env.local -- prisma db seed",
+    "db:studio": "npm run db:check && dotenv -e .env.local -- prisma studio"
   },
   "dependencies": {
+    "@prisma/client": "^6.4.1",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-slot": "^1.0.2",
@@ -19,7 +36,6 @@
     "next": "^14.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "sqlite3": "^5.1.7",
     "tailwind-merge": "^2.5.2",
     "zod": "^3.23.8"
   },
@@ -28,8 +44,13 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.35",
     "postcss": "^8.4.39",
+    "prisma": "^6.4.1",
     "tailwindcss": "^3.4.10",
+    "tsx": "^4.19.2",
     "typescript": "^5.5.4"
   }
 }

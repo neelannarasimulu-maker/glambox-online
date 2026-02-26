@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PopupShell } from "@/components/popup/PopupShell";
 import { BookingWidget } from "@/components/booking/BookingWidget";
@@ -9,7 +10,7 @@ export default function ServiceDetailPage({
 }: {
   params: { popup: string; service: string };
 }) {
-  if (!getPopupKeys().includes(params.popup as "hair" | "nails" | "wellness" | "food")) {
+  if (!getPopupKeys().includes(params.popup)) {
     notFound();
   }
 
@@ -31,11 +32,15 @@ export default function ServiceDetailPage({
       <section className="py-16">
         <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-6">
           <div className="overflow-hidden rounded-3xl">
-            <img
-              src={service.image.src}
-              alt={service.image.alt}
-              className="h-72 w-full object-cover md:h-96"
-            />
+            <div className="relative h-72 w-full md:h-96">
+              <Image
+                src={service.image.src}
+                alt={service.image.alt}
+                fill
+                sizes="(min-width: 768px) 80vw, 100vw"
+                className="object-cover"
+              />
+            </div>
           </div>
           <div className="flex flex-col gap-6">
             <h1 className="text-4xl font-semibold text-[var(--fg)]">

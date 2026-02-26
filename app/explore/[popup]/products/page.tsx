@@ -4,7 +4,7 @@ import { ProductGrid } from "@/components/sections/ProductGrid";
 import { getPopupConfig, getPopupKeys } from "@/lib/content";
 
 export default function PopupProductsPage({ params }: { params: { popup: string } }) {
-  if (!getPopupKeys().includes(params.popup as "hair" | "nails" | "wellness" | "food")) {
+  if (!getPopupKeys().includes(params.popup)) {
     notFound();
   }
 

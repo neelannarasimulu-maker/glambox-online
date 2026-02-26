@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCart, priceLabel } from "@/components/cart/CartProvider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -30,9 +31,11 @@ export default function ConfirmationPage() {
               {lastOrder.map((item) => (
                 <div key={item.itemKey} className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
-                    <img
+                    <Image
                       src={item.image.src}
                       alt={item.image.alt}
+                      width={56}
+                      height={56}
                       className="h-14 w-14 rounded-xl object-cover"
                     />
                     <div>

@@ -9,9 +9,8 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getPopupConfig, getSiteConfig } from "@/lib/content";
-import { getChatStatus } from "@/lib/chatStatus";
 import type { Booking } from "@/lib/bookings";
+import type { CSSProperties } from "react";
 
 type BookingActionMode = "reschedule" | "cancel" | null;
 type BookingActionState = {
@@ -23,6 +22,64 @@ type BookingActionState = {
   error: string | null;
   success: string | null;
 };
+
+const supportTelHref = "tel:+27835550142";
+const supportWhatsappHref = "https://wa.me/27835550142";
+const popupBadgeStyles: Record<string, CSSProperties> = {
+  hair: {
+    backgroundColor: "color-mix(in srgb, #7c3aed 28%, white)",
+    color: "#1f2937",
+    borderColor: "color-mix(in srgb, #7c3aed 55%, white)"
+  },
+  nails: {
+    backgroundColor: "color-mix(in srgb, #db2777 28%, white)",
+    color: "#111827",
+    borderColor: "color-mix(in srgb, #db2777 55%, white)"
+  },
+  wellness: {
+    backgroundColor: "color-mix(in srgb, #14b8a6 28%, white)",
+    color: "#0f172a",
+    borderColor: "color-mix(in srgb, #14b8a6 55%, white)"
+  },
+  food: {
+    backgroundColor: "color-mix(in srgb, #f97316 28%, white)",
+    color: "#3b1f0f",
+    borderColor: "color-mix(in srgb, #f97316 55%, white)"
+  }
+};
+
+const purchases = [
+  { id: "order-1", popup: "Hair Atelier", productName: "Luxe Shine Oil", date: "2026-02-14", price: "R420" },
+  { id: "order-2", popup: "Nail Studio", productName: "Nail Recovery Mask", date: "2026-02-12", price: "R260" },
+  { id: "order-3", popup: "Wellness Lounge", productName: "Calm Balm", date: "2026-02-09", price: "R340" }
+];
+
+const chatPreviews = [
+  {
+    key: "hair-noah",
+    consultantName: "Noah Rivera",
+    popupName: "Hair Atelier",
+    statusLabel: "Unavailable",
+    responseTime: "Replies within 1 hour",
+    href: "/explore/hair/consultants/noah/chat"
+  },
+  {
+    key: "nails-mira",
+    consultantName: "Mira Lopez",
+    popupName: "Nail Studio",
+    statusLabel: "Available now",
+    responseTime: "Usually replies in under 5 minutes",
+    href: "/explore/nails/consultants/mira/chat"
+  },
+  {
+    key: "wellness-leila",
+    consultantName: "Leila Hart",
+    popupName: "Wellness Lounge",
+    statusLabel: "Available now",
+    responseTime: "Usually replies in under 5 minutes",
+    href: "/explore/wellness/consultants/leila/chat"
+  }
+];
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -89,7 +146,7 @@ export default function DashboardPage() {
     setIsLoadingBookings(true);
     setBookingsError(null);
     const scope = showAllAppointments ? "all" : "active";
-    fetch(`/api/bookings?userId=${encodeURIComponent(user.id)}&scope=${scope}`)
+    fetch(`/api/bookings?scope=${scope}`)
       .then(async (response) => {
         const result = (await response.json()) as { bookings?: Booking[]; error?: string };
         if (!response.ok) {
@@ -129,17 +186,6 @@ export default function DashboardPage() {
     return null;
   }
 
-  const hair = getPopupConfig("hair");
-  const nails = getPopupConfig("nails");
-  const wellness = getPopupConfig("wellness");
-  const site = getSiteConfig();
-  const supportChannel = site.supportPage.channels.find(
-    (channel) => channel.label.toLowerCase() === "telephone"
-  );
-  const supportTelHref = supportChannel
-    ? `tel:${supportChannel.value.replace(/[^\d+]/g, "")}`
-    : "/support";
-
   const timeOptions = ["09:00", "10:30", "12:00", "14:00", "15:30", "17:00"];
   const sectionTitleClass = "text-2xl font-semibold tracking-[-0.015em] text-[var(--fg)]";
   const sectionBodyClass = "mt-2 text-sm leading-6 text-[var(--muted-foreground)]";
@@ -178,14 +224,12 @@ export default function DashboardPage() {
       const payload =
         action.mode === "reschedule"
           ? {
-              userId: user.id,
               action: "reschedule",
               bookingDate: action.bookingDate,
               bookingTime: action.bookingTime,
               reason: action.reason
             }
           : {
-              userId: user.id,
               action: "cancel",
               reason: action.reason
             };
@@ -226,34 +270,6 @@ export default function DashboardPage() {
     }
   };
 
-  const purchases = [
-    {
-      id: "order-1",
-      popup: hair.name,
-      product: hair.pages.products.products.find((p) => p.id === "shine-oil"),
-      date: "2026-02-14",
-      price: hair.pages.products.products.find((p) => p.id === "shine-oil")?.price ?? "R0"
-    },
-    {
-      id: "order-2",
-      popup: nails.name,
-      product: nails.pages.products.products.find((p) => p.id === "nail-recovery-mask"),
-      date: "2026-02-12",
-      price:
-        nails.pages.products.products.find((p) => p.id === "nail-recovery-mask")?.price ??
-        "R0"
-    },
-    {
-      id: "order-3",
-      popup: wellness.name,
-      product: wellness.pages.products.products.find((p) => p.id === "calm-balm"),
-      date: "2026-02-09",
-      price:
-        wellness.pages.products.products.find((p) => p.id === "calm-balm")?.price ??
-        "R0"
-    }
-  ].filter((item) => item.product);
-
   return (
     <Section>
       <Container className="flex flex-col gap-10">
@@ -283,7 +299,7 @@ export default function DashboardPage() {
                 Speak to someone
               </a>{" "}
               or{" "}
-              <a href="https://wa.me/27835550142" className={actionLinkClass}>
+              <a href={supportWhatsappHref} className={actionLinkClass}>
                 WhatsApp us on +27 83 555 0142
               </a>{" "}
               or{" "}
@@ -326,7 +342,13 @@ export default function DashboardPage() {
                       className="flex flex-col gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4"
                     >
                       <div className="flex flex-wrap items-center gap-2">
-                        <Badge variant="pop">{item.popupName}</Badge>
+                        <Badge
+                          variant="pop"
+                          className="border shadow-none"
+                          style={popupBadgeStyles[item.popupKey]}
+                        >
+                          {item.popupName}
+                        </Badge>
                         <span className="text-sm font-medium text-[var(--fg)]">{item.serviceTitle}</span>
                         <Badge variant="stone" className="capitalize">
                           {item.status}
@@ -450,7 +472,7 @@ export default function DashboardPage() {
                 >
                   <div>
                     <div className="text-sm font-medium text-[var(--fg)]">
-                      {item.product?.name} - {item.popup}
+                      {item.productName} - {item.popup}
                     </div>
                     <div className={itemTextClass}>{item.date}</div>
                   </div>
@@ -469,38 +491,23 @@ export default function DashboardPage() {
             Conversations with your consultants across popups.
           </p>
           <div className="mt-4 flex flex-col gap-3">
-            {[hair, nails, wellness]
-              .flatMap((popup) =>
-                popup.pages.consultants.consultants.map((consultant) => ({
-                  popup,
-                  consultant
-                }))
-              )
-              .slice(0, 3)
-              .map(({ popup, consultant }) => {
-                const status = getChatStatus(popup.popupKey, consultant.id);
-                return (
-                  <div
-                    key={`${popup.popupKey}-${consultant.id}`}
-                    className="flex flex-col gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm"
-                  >
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge variant="pop">{consultant.name}</Badge>
-                      <span className="text-sm text-[var(--muted-foreground)]">{popup.name}</span>
-                    </div>
-                    <div className={itemTextClass}>
-                      {status.status === "available" ? "Available now" : "Unavailable"} -{" "}
-                      {status.responseTime}
-                    </div>
-                    <Link
-                      href={`/explore/${popup.popupKey}/consultants/${consultant.id}/chat`}
-                      className={actionLinkClass}
-                    >
-                      Open chat
-                    </Link>
-                  </div>
-                );
-              })}
+            {chatPreviews.map((chat) => (
+              <div
+                key={chat.key}
+                className="flex flex-col gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm"
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="pop">{chat.consultantName}</Badge>
+                  <span className="text-sm text-[var(--muted-foreground)]">{chat.popupName}</span>
+                </div>
+                <div className={itemTextClass}>
+                  {chat.statusLabel} - {chat.responseTime}
+                </div>
+                <Link href={chat.href} className={actionLinkClass}>
+                  Open chat
+                </Link>
+              </div>
+            ))}
             <Link href="/chats" className={actionLinkClass}>
               View all chats
             </Link>

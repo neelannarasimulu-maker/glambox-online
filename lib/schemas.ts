@@ -1,6 +1,9 @@
 import { z } from "zod";
 
-export const PopupKeySchema = z.enum(["hair", "nails", "wellness", "food"]);
+export const PopupKeySchema = z
+  .string()
+  .trim()
+  .regex(/^[a-z0-9-]+$/, "Popup keys may only contain lowercase letters, numbers, and hyphens.");
 
 const ImageSchema = z.object({
   src: z.string(),

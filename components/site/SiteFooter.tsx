@@ -26,8 +26,8 @@ export function SiteFooter({ config }: { config: SiteConfig }) {
         <div className="flex flex-col items-start justify-between gap-2 border-t border-[var(--border)] pt-3 text-xs text-[var(--muted-foreground)] md:flex-row md:items-center">
           <span>{config.footer.legal.copyright}</span>
           <div className="flex gap-4">
-            <Link href={config.footer.legal.termsHref} className="hover:text-[var(--fg)]">{config.footer.legal.termsHref}</Link>
-            <Link href={config.footer.legal.privacyHref} className="hover:text-[var(--fg)]">{config.footer.legal.privacyHref}</Link>
+            <Link href={config.footer.legal.termsHref} className="hover:text-[var(--fg)]">Terms</Link>
+            <Link href={config.footer.legal.privacyHref} className="hover:text-[var(--fg)]">Privacy</Link>
           </div>
         </div>
       </div>

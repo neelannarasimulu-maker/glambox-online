@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   BadgeCheck,
   Brush,
@@ -15,7 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FeatureCard } from "@/components/ui/feature-card";
-import { Section } from "@/components/Section";
+import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import type { BackgroundKey } from "@/lib/theme/backgrounds";
 import type { SiteConfig } from "@/lib/schemas";
@@ -39,6 +40,8 @@ const iconMap = {
 type SectionGridProps = SiteConfig["landing"]["sections"][number] & {
   background?: BackgroundKey;
   headingClassName?: string;
+  bodyClassName?: string;
+  accentAll?: boolean;
 };
 
 export function SectionGrid({
@@ -47,7 +50,9 @@ export function SectionGrid({
   items,
   cta,
   background,
-  headingClassName
+  headingClassName,
+  bodyClassName,
+  accentAll = false
 }: SectionGridProps) {
   return (
     <Section background={background}>
@@ -56,7 +61,11 @@ export function SectionGrid({
           <h2 className={`text-3xl font-semibold tracking-[-0.015em] md:text-4xl ${headingClassName ?? "text-[var(--fg)]"}`}>
             {headline}
           </h2>
-          <p className="max-w-2xl text-base leading-7 text-[var(--muted-foreground)]">{body}</p>
+          <p
+            className={`${bodyClassName ?? "max-w-2xl"} text-base leading-7 text-[var(--muted-foreground)]`}
+          >
+            {body}
+          </p>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {items.map((item, index) => {
@@ -66,7 +75,7 @@ export function SectionGrid({
                 key={item.title}
                 title={item.title}
                 body={item.body}
-                accent={index % 2 === 0}
+                accent={accentAll || index % 2 === 0}
                 icon={
                   <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--border)_70%,white)] bg-[var(--muted)] text-[var(--primary)] shadow-[var(--shadow-soft)]">
                     <Icon size={20} />
@@ -79,7 +88,7 @@ export function SectionGrid({
         {cta ? (
           <div>
             <Button asChild>
-              <a href={cta.href}>{cta.label}</a>
+              <Link href={cta.href}>{cta.label}</Link>
             </Button>
           </div>
         ) : null}

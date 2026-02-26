@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { SiteConfig } from "@/lib/schemas";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -15,7 +16,7 @@ export function Nav({ config }: NavProps) {
     <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)] backdrop-blur">
       <Container className="flex items-center justify-between py-4">
         <Link href="/" className="flex items-center gap-3">
-          <img src={config.brand.logo.src} alt={config.brand.logo.alt} className="h-9 w-9" />
+          <Image src={config.brand.logo.src} alt={config.brand.logo.alt} width={36} height={36} className="h-9 w-9" />
           <div className="flex flex-col">
             <span className="text-lg font-semibold text-[var(--fg)]">
               {config.brand.name}

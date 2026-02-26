@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { PopupConfig } from "@/lib/schemas";
+import { themeToVars } from "@/lib/theme";
 
 export function ThemeProvider({
   theme,
@@ -11,7 +12,11 @@ export function ThemeProvider({
   children: ReactNode;
 }) {
   return (
-    <div data-theme={popupKey} className="bg-[var(--bg)] text-[var(--fg)]">
+    <div
+      data-theme={popupKey}
+      style={themeToVars(theme)}
+      className="bg-[var(--bg)] text-[var(--fg)]"
+    >
       {children}
     </div>
   );

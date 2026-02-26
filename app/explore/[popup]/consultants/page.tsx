@@ -4,7 +4,7 @@ import { ConsultantCards } from "@/components/sections/ConsultantCards";
 import { getPopupConfig, getPopupKeys } from "@/lib/content";
 
 export default function PopupConsultantsPage({ params }: { params: { popup: string } }) {
-  if (!getPopupKeys().includes(params.popup as "hair" | "nails" | "wellness" | "food")) {
+  if (!getPopupKeys().includes(params.popup)) {
     notFound();
   }
 

@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
-import { comparePassword, toSessionUser, type UserRow } from "@/lib/auth";
-import { get } from "@/lib/db";
-import { emailSchema, enforceRateLimit } from "@/lib/security";
-import { applySessionCookie, createSession, recordLoginEvent } from "@/lib/authSession";
+import { enforceRateLimit } from "@/lib/security";
+import { applySessionCookie } from "@/lib/authSession";
+import { AuthServiceError, loginWithEmail } from "@/modules/auth/service";
+import { loginInputSchema } from "@/modules/auth/schemas";
 
 const LOGIN_WINDOW_MS = 10 * 60 * 1000;
 const MAX_LOGIN_ATTEMPTS = 12;
 
 export async function POST(request: Request) {
-  const rateLimit = enforceRateLimit(request, "auth:login", MAX_LOGIN_ATTEMPTS, LOGIN_WINDOW_MS);
+  const rateLimit = await enforceRateLimit(request, "auth:login", MAX_LOGIN_ATTEMPTS, LOGIN_WINDOW_MS);
   if (rateLimit.limited) {
     return NextResponse.json(
       {
@@ -22,37 +22,25 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { email, password } = body as { email?: string; password?: string };
-
-  const parsedEmail = emailSchema.safeParse(email);
-  if (!parsedEmail.success || !password) {
-    return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
+  const parsed = loginInputSchema.safeParse(body);
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0]?.message || "Email and password are required.";
+    return NextResponse.json({ error: issue }, { status: 400 });
   }
 
-  const user = await get<UserRow>("SELECT * FROM users WHERE lower(email) = ?", [parsedEmail.data]);
-  if (!user) {
-    return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
+  try {
+    const result = await loginWithEmail(parsed.data, request);
+    const response = NextResponse.json({ user: result.user });
+    applySessionCookie(response, result.session.token, result.session.expiresAt);
+    return response;
+  } catch (error) {
+    if (error instanceof AuthServiceError) {
+      return NextResponse.json(
+        { error: error.message, code: error.code },
+        { status: error.status }
+      );
+    }
+    console.error("Failed to log in", error);
+    return NextResponse.json({ error: "Could not complete sign in." }, { status: 500 });
   }
-
-  if (!user.password_hash) {
-    return NextResponse.json(
-      {
-        error: "This account does not have a password yet. Reset your password to continue.",
-        code: "PASSWORD_RESET_REQUIRED"
-      },
-      { status: 403 }
-    );
-  }
-
-  const isValidPassword = await comparePassword(password, user.password_hash);
-  if (!isValidPassword) {
-    return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
-  }
-
-  const session = await createSession(user.id, "email");
-  await recordLoginEvent(user.id, "email", request);
-
-  const response = NextResponse.json({ user: toSessionUser(user) });
-  applySessionCookie(response, session.token, session.expiresAt);
-  return response;
 }

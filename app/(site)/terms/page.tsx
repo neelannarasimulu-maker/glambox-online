@@ -1,4 +1,4 @@
-import { Section } from "@/components/Section";
+import { Section } from "@/components/ui/section";
 import { Card } from "@/components/ui/card";
 
 const clauses = [

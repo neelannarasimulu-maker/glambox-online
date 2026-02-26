@@ -1,71 +1,5 @@
-import { z } from "zod";
-
-const EMAIL_MAX_LENGTH = 254;
-const NAME_MAX_LENGTH = 120;
-const PASSWORD_MIN_LENGTH = 12;
-const PASSWORD_MAX_LENGTH = 128;
-
-export const emailSchema = z
-  .string()
-  .trim()
-  .toLowerCase()
-  .email("Please enter a valid email address.")
-  .max(EMAIL_MAX_LENGTH, "Email is too long.");
-
-export const fullNameSchema = z
-  .string()
-  .trim()
-  .min(2, "Full name is required.")
-  .max(NAME_MAX_LENGTH, "Full name is too long.");
-
-export const passwordSchema = z
-  .string()
-  .min(PASSWORD_MIN_LENGTH, `Password must be at least ${PASSWORD_MIN_LENGTH} characters.`)
-  .max(PASSWORD_MAX_LENGTH, "Password is too long.")
-  .regex(/[A-Z]/, "Password must include at least one uppercase letter.")
-  .regex(/[a-z]/, "Password must include at least one lowercase letter.")
-  .regex(/[0-9]/, "Password must include at least one number.")
-  .regex(/[^A-Za-z0-9]/, "Password must include at least one special character.");
-
-type Bucket = {
-  count: number;
-  resetAt: number;
-};
-
-const rateLimitStore = new Map<string, Bucket>();
-let lastRateLimitCleanupAt = 0;
-const RATE_LIMIT_CLEANUP_INTERVAL_MS = 60 * 1000;
-const RATE_LIMIT_MAX_ENTRIES = 10_000;
-
-function cleanupRateLimitStore(now: number) {
-  if (
-    now - lastRateLimitCleanupAt < RATE_LIMIT_CLEANUP_INTERVAL_MS &&
-    rateLimitStore.size < RATE_LIMIT_MAX_ENTRIES
-  ) {
-    return;
-  }
-
-  for (const [key, bucket] of rateLimitStore.entries()) {
-    if (bucket.resetAt <= now) {
-      rateLimitStore.delete(key);
-    }
-  }
-
-  // Hard safety cap to prevent unbounded in-memory growth under abnormal traffic.
-  if (rateLimitStore.size > RATE_LIMIT_MAX_ENTRIES) {
-    const overflow = rateLimitStore.size - RATE_LIMIT_MAX_ENTRIES;
-    let removed = 0;
-    for (const key of rateLimitStore.keys()) {
-      rateLimitStore.delete(key);
-      removed += 1;
-      if (removed >= overflow) {
-        break;
-      }
-    }
-  }
-
-  lastRateLimitCleanupAt = now;
-}
+import { prisma } from "@/lib/db";
+export { emailSchema, fullNameSchema, passwordSchema } from "@/lib/validation";
 
 function getClientIp(request: Request) {
   const forwardedFor = request.headers.get("x-forwarded-for");
@@ -77,28 +11,138 @@ function getClientIp(request: Request) {
   return realIp?.trim() || "unknown";
 }
 
-export function enforceRateLimit(request: Request, action: string, maxAttempts: number, windowMs: number) {
+type RateLimitRow = {
+  count: number;
+  expires_at: Date;
+};
+
+function getWindowBounds(windowMs: number) {
   const now = Date.now();
-  cleanupRateLimitStore(now);
+  const windowStartMs = Math.floor(now / windowMs) * windowMs;
+  const expiresAtMs = windowStartMs + windowMs;
+  return { now, windowStartMs, expiresAtMs };
+}
+
+let lastRateLimitGcAt = 0;
+const RATE_LIMIT_GC_INTERVAL_MS = 5 * 60 * 1000;
+
+async function cleanupExpiredRateLimits() {
+  const now = Date.now();
+  if (now - lastRateLimitGcAt < RATE_LIMIT_GC_INTERVAL_MS) {
+    return;
+  }
+
+  lastRateLimitGcAt = now;
+  await prisma.$executeRaw`
+    DELETE FROM "api_rate_limits"
+    WHERE "expires_at" < NOW()
+  `;
+}
+
+export async function enforceRateLimit(
+  request: Request,
+  action: string,
+  maxAttempts: number,
+  windowMs: number
+) {
   const clientIp = getClientIp(request);
   const key = `${action}:${clientIp}`;
-  const bucket = rateLimitStore.get(key);
+  const { now, windowStartMs, expiresAtMs } = getWindowBounds(windowMs);
 
-  if (!bucket || bucket.resetAt <= now) {
-    rateLimitStore.set(key, {
-      count: 1,
-      resetAt: now + windowMs
-    });
+  const rows = await prisma.$queryRaw<RateLimitRow[]>`
+    INSERT INTO "api_rate_limits" ("key", "count", "window_started_at", "expires_at", "updated_at")
+    VALUES (
+      ${key},
+      1,
+      TO_TIMESTAMP(${windowStartMs}::double precision / 1000.0),
+      TO_TIMESTAMP(${expiresAtMs}::double precision / 1000.0),
+      NOW()
+    )
+    ON CONFLICT ("key")
+    DO UPDATE SET
+      "count" = CASE
+        WHEN "api_rate_limits"."expires_at" <= NOW() THEN 1
+        ELSE "api_rate_limits"."count" + 1
+      END,
+      "window_started_at" = CASE
+        WHEN "api_rate_limits"."expires_at" <= NOW()
+          THEN TO_TIMESTAMP(${windowStartMs}::double precision / 1000.0)
+        ELSE "api_rate_limits"."window_started_at"
+      END,
+      "expires_at" = CASE
+        WHEN "api_rate_limits"."expires_at" <= NOW()
+          THEN TO_TIMESTAMP(${expiresAtMs}::double precision / 1000.0)
+        ELSE "api_rate_limits"."expires_at"
+      END,
+      "updated_at" = NOW()
+    RETURNING "count", "expires_at"
+  `;
+
+  const bucket = rows[0];
+  if (!bucket) {
     return { limited: false as const };
   }
 
-  if (bucket.count >= maxAttempts) {
+  if (bucket.count > maxAttempts) {
     return {
       limited: true as const,
-      retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000))
+      retryAfterSeconds: Math.max(1, Math.ceil((bucket.expires_at.getTime() - now) / 1000))
     };
   }
 
-  bucket.count += 1;
+  if (Math.random() < 0.02) {
+    void cleanupExpiredRateLimits();
+  }
+
   return { limited: false as const };
+}
+
+function parseTrustedOriginsFromEnv() {
+  return (process.env.CSRF_TRUSTED_ORIGINS || "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
+
+export function isTrustedOrigin(request: Request) {
+  const originHeader = request.headers.get("origin");
+  if (!originHeader) {
+    return false;
+  }
+
+  let origin: URL;
+  try {
+    origin = new URL(originHeader);
+  } catch {
+    return false;
+  }
+
+  const trustedOrigins = parseTrustedOriginsFromEnv();
+  if (trustedOrigins.includes(origin.origin)) {
+    return true;
+  }
+
+  let requestOrigin: string | null = null;
+  try {
+    requestOrigin = new URL(request.url).origin;
+  } catch {
+    requestOrigin = null;
+  }
+
+  if (requestOrigin && origin.origin === requestOrigin) {
+    return true;
+  }
+
+  const host = (request.headers.get("x-forwarded-host") || request.headers.get("host") || "")
+    .split(",")[0]
+    ?.trim();
+  const proto = (request.headers.get("x-forwarded-proto") || "https")
+    .split(",")[0]
+    ?.trim();
+
+  if (!host || !proto) {
+    return false;
+  }
+
+  return origin.origin === `${proto}://${host}`;
 }

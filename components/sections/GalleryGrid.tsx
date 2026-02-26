@@ -1,5 +1,6 @@
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Section } from "@/components/Section";
+import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import type { BackgroundKey } from "@/lib/theme/backgrounds";
 import type { PopupConfig } from "@/lib/schemas";
@@ -28,11 +29,15 @@ export function GalleryGrid({
         <div className="grid gap-6 md:grid-cols-3">
           {items.map((item) => (
             <Card key={item.id} accent className="overflow-hidden">
-              <img
-                src={item.image.src}
-                alt={item.image.alt}
-                className="h-52 w-full object-cover"
-              />
+              <div className="relative h-52 w-full">
+                <Image
+                  src={item.image.src}
+                  alt={item.image.alt}
+                  fill
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
               <CardHeader>
                 <CardTitle>{item.title}</CardTitle>
               </CardHeader>
